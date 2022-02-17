@@ -14,11 +14,14 @@ import os
 app = Flask(__name__)
 
 # 環境変数取得
-LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
-LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
+# LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
+# LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
-line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-handler = WebhookHandler(LINE_CHANNEL_SECRET)
+# line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+# handler = WebhookHandler(LINE_CHANNEL_SECRET)
+
+line_bot_api = LineBotApi("eM6eL+yIjcNrrUEKrQnP+zgkogJS/xpQynojrM/vWdKnLiCyGZu0o0VZVRzx+OuFhjDEjo5LUob5YOF28LuiQa75R2izS48lLQHvwO90nG2HnYRFRLBChAPkLTTN8OBC6ItcEpBWu3oU9WwHQ5BtjAdB04t89/1O/w1cDnyilFU=")
+handler = WebhookHandler("7645e9fa87fa1e30fb8909f3ee18e426")
 
 # Webhookからのリクエストをチェックする
 @app.route("/callback", methods=['POST'])
