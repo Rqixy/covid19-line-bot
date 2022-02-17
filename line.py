@@ -20,7 +20,7 @@ app = Flask(__name__)
 # line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 # handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
-line_bot_api = LineBotApi("eM6eL+yIjcNrrUEKrQnP+zgkogJS/xpQynojrM/vWdKnLiCyGZu0o0VZVRzx+OuFhjDEjo5LUob5YOF28LuiQa75R2izS48lLQHvwO90nG2HnYRFRLBChAPkLTTN8OBC6ItcEpBWu3oU9WwHQ5BtjAdB04t89/1O/w1cDnyilFU=")
+line_bot_api = LineBotApi("FoIAaacAIensLFeKn7xfbau96t5STlW7KohrNav97Wl/wL2M32cO9DMfRpYsyM7XhjDEjo5LUob5YOF28LuiQa75R2izS48lLQHvwO90nG2+HijzUFSoWnS39ftx7RceN5+2pSPt8aM4DiEmbYUopgdB04t89/1O/w1cDnyilFU=")
 handler = WebhookHandler("7645e9fa87fa1e30fb8909f3ee18e426")
 
 # Webhookからのリクエストをチェックする
