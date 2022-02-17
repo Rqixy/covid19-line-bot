@@ -1,4 +1,4 @@
-import scraping
+import src.scraping as scraping
 import sqlite3
 from datetime import datetime
 
