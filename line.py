@@ -44,7 +44,7 @@ def callback():
 # Lineのメッセージの取得と返信内容の設定
 
 # LINEでMessageEventが起こった場合に、def以下の関数を実行する
-@handler.add(MessageEvent, massage=TextMessage)
+@handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     line_bot_api.reply_message(
         event.relpy_token,
