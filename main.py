@@ -14,14 +14,14 @@ import os
 app = Flask(__name__)
 
 # 環境変数取得
-# LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
-# LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
+LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
+LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
-# line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
-# handler = WebhookHandler(LINE_CHANNEL_SECRET)
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
-line_bot_api = LineBotApi("FoIAaacAIensLFeKn7xfbau96t5STlW7KohrNav97Wl/wL2M32cO9DMfRpYsyM7XhjDEjo5LUob5YOF28LuiQa75R2izS48lLQHvwO90nG2+HijzUFSoWnS39ftx7RceN5+2pSPt8aM4DiEmbYUopgdB04t89/1O/w1cDnyilFU=")
-handler = WebhookHandler("7645e9fa87fa1e30fb8909f3ee18e426")
+# line_bot_api = LineBotApi("lH2xoBYrXdY+S3NCnK/sppclCNW4ClaMzvgZfXMNOiqDtQbJLs+azHA9SbQN8FFphjDEjo5LUob5YOF28LuiQa75R2izS48lLQHvwO90nG2ou5eJjyW+Rp0LLEXjckOC2E5Ng5dwg4ezaQZJYW/5qgdB04t89/1O/w1cDnyilFU=")
+# handler = WebhookHandler("U6db81b1f3a83373e0ee315628b191fb5")
 
 # Webhookからのリクエストをチェックする
 @app.route("/callback", methods=['POST'])
@@ -39,6 +39,7 @@ def callback():
         handler.handle(body, signature)
     # 署名検証で失敗した場合例外を出す。
     except InvalidSignatureError:
+        print("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
     # handleの処理を終えればOK
     return 'OK'
@@ -55,5 +56,6 @@ def handle_message(event):
 
 # ポートの設定
 if __name__ == '__main__':
+    # app.run()
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
