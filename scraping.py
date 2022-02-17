@@ -46,7 +46,7 @@ def infected_people_scraping():
     #数値型に変換する
     new_infected_people_result = new_infected_people_result.replace(',','')
     new_infected_people_result = int(new_infected_people_result)
-    print("新規感染者の数：" + str(new_infected_people_result) + "人")
+    # print("新規感染者の数：" + str(new_infected_people_result) + "人")
 
     # 元のフレームに戻る
     driver.switch_to.default_content()
@@ -61,7 +61,7 @@ def infected_people_scraping():
     #数値型に変換する
     total_severe_people_result = total_severe_people_result.replace(',','')
     total_severe_people_result = int(total_severe_people_result)
-    print("重症者の数の合計：" + str(total_severe_people_result) + "人")
+    # print("重症者の数の合計：" + str(total_severe_people_result) + "人")
 
     # 元のフレームに戻る
     driver.switch_to.default_content()
@@ -76,7 +76,7 @@ def infected_people_scraping():
     #数値型に変換する
     total_number_of_deaths_result = total_number_of_deaths_result.replace(',','')
     total_number_of_deaths_result = int(total_number_of_deaths_result)
-    print("死亡者の数の合計：" + str(total_number_of_deaths_result) + "人")
+    # print("死亡者の数の合計：" + str(total_number_of_deaths_result) + "人")
     
     # 元のフレームに戻る
     driver.switch_to.default_content()
