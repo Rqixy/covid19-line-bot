@@ -97,13 +97,32 @@ def print_new_data():
 
     return new_data
 
+def print_week_data():
+    db_name = 'infected_people.db'
+    # データベースを作成する
+    con = sqlite3.connect(db_name)
+    cur = con.cursor()
+
+    week_data = []
+    sql = "SELECT * FROM infected_people"
+    for row in cur.execute(sql):
+        week_data.append(row[4] + "\n" + "新規感染者：" + str(row[1]) + "人" + "\n" + "重症者：" + str(row[2]) + "人" + "\n" + "死亡者：" + str(row[3]) + "人\n")
+
+    cur.close()
+    con.close()
+
+    return week_data
+
+
 # create_db()
 
 # print_data()
 # print('----------------------')
 # print(print_new_data())
 # print('----------------------')
-insert_data()
-print_data()
+# insert_data()
+# print_data()
 # print('----------------------')
 # print(print_new_data())
+
+print(print_week_data()[1])

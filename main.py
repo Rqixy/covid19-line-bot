@@ -14,8 +14,10 @@ import db
 
 # データベースから最新のデータ情報を持ってくる
 new_data_array = db.print_new_data()
-line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n" "詳しくは下記のURLから確認してね！" + "\n" + "https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html"
+line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n" "詳しくは下記のURLから確認してね！" + "\n\n" + "https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html"
 # print(line_text_new_data)
+
+week_data_array = db.print_week_data()
 
 app = Flask(__name__)
 
@@ -61,7 +63,7 @@ def handle_message(event):
     elif text in ['1週間', '１週間', '一週間', 'week']:
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="1週間だよ！")
+            TextSendMessage(text=week_data_array)
         )
     else:
         line_bot_api.reply_message(
