@@ -8,21 +8,8 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage, TextSendMessage,
-    SourceUser, SourceGroup, SourceRoom,
+    MessageEvent, TextMessage,
     TemplateSendMessage, ConfirmTemplate, MessageAction,
-    ButtonsTemplate, ImageCarouselTemplate, ImageCarouselColumn, URIAction,
-    PostbackAction, DatetimePickerAction,
-    CameraAction, CameraRollAction, LocationAction,
-    CarouselTemplate, CarouselColumn, PostbackEvent,
-    StickerMessage, StickerSendMessage, LocationMessage, LocationSendMessage,
-    ImageMessage, VideoMessage, AudioMessage, FileMessage,
-    UnfollowEvent, FollowEvent, JoinEvent, LeaveEvent, BeaconEvent,
-    MemberJoinedEvent, MemberLeftEvent,
-    FlexSendMessage, BubbleContainer, ImageComponent, BoxComponent,
-    TextComponent, IconComponent, ButtonComponent,
-    SeparatorComponent, QuickReply, QuickReplyButton,
-    ImageSendMessage
 )
 import os
 import db
@@ -88,8 +75,7 @@ def handle_message(event):
             MessageAction(label='Yes', text='Yes!'),
             MessageAction(label='No', text='No!'),
         ])
-        template_message = TemplateSendMessage(
-            alt_text='Confirm alt text', template=confirm_template)
+        template_message = TemplateSendMessage(alt_text='Confirm alt text', template=confirm_template)
         line_bot_api.reply_message(event.reply_token, template_message)
     # if text in ['最新', '最新情報']:
     #     confirm_template = ConfirmTemplate(
