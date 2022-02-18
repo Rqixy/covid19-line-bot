@@ -64,7 +64,7 @@ def handle_message(event):
     elif text in ['1週間', '１週間', '一週間', 'week']:
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text=week_data_array)
+            TextSendMessage(text=line_text_week_data)
         )
     else:
         line_bot_api.reply_message(
