@@ -77,7 +77,8 @@ def handle_message(event):
         ])
         template_message = TemplateSendMessage(alt_text='Confirm alt text', template=confirm_template)
         line_bot_api.reply_message(event.reply_token, template_message)
-    elif text in ['最新', '最新情報']:
+        
+    elif text == '最新' or text == '最新情報':
         confirm_template = ConfirmTemplate(
             text=line_text_new_data,
             actions=[
@@ -88,7 +89,7 @@ def handle_message(event):
         template_message = TemplateSendMessage(alt_text='New infected people data text', template=confirm_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
-    elif text in ['1週間', '１週間', '一週間', 'week']:
+    elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
         confirm_template = ConfirmTemplate(
             text=line_text_week_data, 
             actions=[
