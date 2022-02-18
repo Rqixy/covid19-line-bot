@@ -1,4 +1,4 @@
-import src.scraping as scraping
+import scraping
 import sqlite3
 from datetime import datetime
 
@@ -37,9 +37,13 @@ def insert_data():
     # スクレイピング結果を配列で取得する
     result_array = scraping.infected_people_scraping()
     # 現在時刻を配列に追加する
-    now = datetime.now().isoformat()
-    result_array.append(now)
-    # print(result_array)
+    now = datetime.now()
+    date = now.strftime("%Y年%m月%d日")
+    weekday = now.weekday()
+    weekdays = ["月", "火", "水", "木", "金", "土", "日"]
+    now_date = date + "(" + weekdays[weekday] + ")"
+    result_array.append(now_date)
+    print(result_array)
     
     sql = "INSERT INTO infected_people (new_people, severe_people, deaths, created_at) VALUES (?, ?, ?, ?)"
     # データベースにデータを格納する
@@ -68,15 +72,37 @@ def print_data():
 
     sql = "SELECT * FROM infected_people"
     for row in cur.execute(sql):
-        print(row)
+        print_row = [row[4], "新規感染者：" + str(row[1]) + "人", "重症者：" + str(row[2]) + "人", "死亡者：" + str(row[3]) + "人"]
+        print(print_row)
 
     cur.close()
     con.close()
 
 
+    # 最新の感染情報だけを取得して返す
+def print_new_data():
+    db_name = 'infected_people.db'
+    # データベースを作成する
+    con = sqlite3.connect(db_name)
+    cur = con.cursor()
 
+    new_data = []
+    sql = "SELECT * FROM infected_people LIMIT 7"
+    for row in cur.execute(sql):
+        new_data = [row[4], "新規感染者：" + str(row[1]) + "人", "重症者：" + str(row[2]) + "人", "死亡者：" + str(row[3]) + "人"]
+
+    cur.close()
+    con.close()
+
+    return new_data
 
 # create_db()
-# print_data()
 
-insert_data()
+# print_data()
+# print('----------------------')
+# print(print_new_data())
+# print('----------------------')
+# insert_data()
+# print_data()
+# print('----------------------')
+# print(print_new_data())

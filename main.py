@@ -10,6 +10,11 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 import os
+import db
+
+# データベースから最新のデータ情報を持ってくる
+new_data_array = db.print_new_data()
+line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3]
 
 app = Flask(__name__)
 
@@ -19,9 +24,6 @@ LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
-
-# line_bot_api = LineBotApi("HuKxHNyBohSsalkUavt2uN/WNAsQ+JBlW48b9c6lDId9DP+Sh0lW3LWB7KbMFJw9dCF1jS7qm+SHEXe37z6i69VSbspKxHOc7WMIkHFYDjNC9uIpwmnMUz6691Ul+34S+fQXe8TTdv+Hkg3Q6AfuQQdB04t89/1O/w1cDnyilFU=")
-# handler = WebhookHandler("92f0e2cf05b3db08e09a8fc4230fe5c9")
 
 # Webhookからのリクエストをチェックする
 @app.route("/callback", methods=['POST'])
@@ -46,7 +48,6 @@ def callback():
 
 
 # Lineのメッセージの取得と返信内容の設定
-
 # LINEでMessageEventが起こった場合に、def以下の関数を実行する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
@@ -54,7 +55,7 @@ def handle_message(event):
     if text in ['最新', '最新情報']:
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="最新だよ！")
+            TextSendMessage(text=line_text_new_data)
         )
     elif text in ['1週間', '１週間', '一週間', 'week']:
         line_bot_api.reply_message(
@@ -66,9 +67,6 @@ def handle_message(event):
             event.reply_token,
             TextSendMessage(text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！")
         )
-    # line_bot_api.reply_message(
-    #     event.reply_token,
-    #     TextSendMessage(text=event.message.text))
 
 # ポートの設定
 if __name__ == '__main__':
