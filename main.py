@@ -66,55 +66,63 @@ def callback():
     # handleの処理を終えればOK
     return 'OK'
 
-@handler.add(FollowEvent)
-def handle_follow(event):
-    confirm_template = ConfirmTemplate(
-        text="友達追加ありがとうございいます！\n\n毎朝7時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1週間\"を入力してね！\n\nまた下のボタンからでも確認できるよ！\n\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n詳しくはこちらのサイトから確認してね！",
-        actions=[
-            MessageAction(label="最新", text=line_text_new_data),
-            MessageAction(label="1週間", text=line_text_week_data)
-        ]
-    )
-    template_message = TemplateSendMessage(alt_text='add friend text', template=confirm_template)
-    line_bot_api.reply_message(event.reply_token, template_message)
+# @handler.add(FollowEvent)
+# def handle_follow(event):
+#     confirm_template = ConfirmTemplate(
+#         text="友達追加ありがとうございいます！\n\n毎朝7時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1週間\"を入力してね！\n\nまた下のボタンからでも確認できるよ！\n\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n詳しくはこちらのサイトから確認してね！",
+#         actions=[
+#             MessageAction(label="最新", text=line_text_new_data),
+#             MessageAction(label="1週間", text=line_text_week_data)
+#         ]
+#     )
+#     template_message = TemplateSendMessage(alt_text='add friend text', template=confirm_template)
+#     line_bot_api.reply_message(event.reply_token, template_message)
 
 # Lineのメッセージの取得と返信内容の設定
 # LINEでMessageEventが起こった場合に、def以下の関数を実行する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     text = event.message.text
-    if text in ['最新', '最新情報']:
-        confirm_template = ConfirmTemplate(
-            text=line_text_new_data, 
-            actions=[
-            MessageAction(label="最新", text=line_text_new_data),
-            MessageAction(label="1週間", text=line_text_week_data)
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='New infected people data text', template=confirm_template)
+    if text == 'confirm':
+        confirm_template = ConfirmTemplate(text='Do it?', actions=[
+            MessageAction(label='Yes', text='Yes!'),
+            MessageAction(label='No', text='No!'),
+        ])
+        template_message = TemplateSendMessage(
+            alt_text='Confirm alt text', template=confirm_template)
         line_bot_api.reply_message(event.reply_token, template_message)
+    # if text in ['最新', '最新情報']:
+    #     confirm_template = ConfirmTemplate(
+    #         text=line_text_new_data,
+    #         actions=[
+    #             MessageAction(label="最新", text=line_text_new_data),
+    #             MessageAction(label="1週間", text=line_text_week_data)
+    #         ]
+    #     )
+    #     template_message = TemplateSendMessage(alt_text='New infected people data text', template=confirm_template)
+    #     line_bot_api.reply_message(event.reply_token, template_message)
 
-    elif text in ['1週間', '１週間', '一週間', 'week']:
-        confirm_template = ConfirmTemplate(
-            text=line_text_week_data, 
-            actions=[
-            MessageAction(label="最新", text=line_text_new_data),
-            MessageAction(label="1週間", text=line_text_week_data)
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='One week infected people data text', template=confirm_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
+    # elif text in ['1週間', '１週間', '一週間', 'week']:
+    #     confirm_template = ConfirmTemplate(
+    #         text=line_text_week_data, 
+    #         actions=[
+    #             MessageAction(label="最新", text=line_text_new_data),
+    #             MessageAction(label="1週間", text=line_text_week_data)
+    #         ]
+    #     )
+    #     template_message = TemplateSendMessage(alt_text='One week infected people data text', template=confirm_template)
+    #     line_bot_api.reply_message(event.reply_token, template_message)
 
-    else:
-        confirm_template = ConfirmTemplate(
-            text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n", 
-            actions=[
-            MessageAction(label="最新", text=line_text_new_data),
-            MessageAction(label="1週間", text=line_text_week_data)
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='error text', template=confirm_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
+    # else:
+    #     confirm_template = ConfirmTemplate(
+    #         text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n", 
+    #         actions=[
+    #             MessageAction(label="最新", text=line_text_new_data),
+    #             MessageAction(label="1週間", text=line_text_week_data)
+    #         ]
+    #     )
+    #     template_message = TemplateSendMessage(alt_text='error text', template=confirm_template)
+    #     line_bot_api.reply_message(event.reply_token, template_message)
 
 # ポートの設定
 if __name__ == '__main__':

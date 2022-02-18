@@ -125,4 +125,4 @@ def print_week_data():
 # print('----------------------')
 # print(print_new_data())
 
-print(print_week_data()[1])
+# print(print_week_data()[1])
