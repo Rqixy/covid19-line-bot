@@ -1,6 +1,6 @@
 import scraping
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 # データベース作成
@@ -38,11 +38,12 @@ def insert_data():
     result_array = scraping.infected_people_scraping()
     # 現在時刻を配列に追加する
     now = datetime.now()
-    date = now.strftime("%Y年%m月%d日")
-    weekday = now.weekday()
+    yesterday = now - timedelta(days=1)
+    date = yesterday.strftime("%Y年%m月%d日")
+    weekday = yesterday.weekday()
     weekdays = ["月", "火", "水", "木", "金", "土", "日"]
-    now_date = date + "(" + weekdays[weekday] + ")"
-    result_array.append(now_date)
+    yesterday_date = date + "(" + weekdays[weekday] + ")"
+    result_array.append(yesterday_date)
     print(result_array)
     
     sql = "INSERT INTO infected_people (new_people, severe_people, deaths, created_at) VALUES (?, ?, ?, ?)"
@@ -102,7 +103,7 @@ def print_new_data():
 # print('----------------------')
 # print(print_new_data())
 # print('----------------------')
-# insert_data()
-# print_data()
+insert_data()
+print_data()
 # print('----------------------')
 # print(print_new_data())
