@@ -87,3 +87,5 @@ def infected_people_scraping():
     infected_people_array = [new_infected_people_result, total_severe_people_result, total_number_of_deaths_result]
     
     return infected_people_array
+
+# print(infected_people_scraping())
