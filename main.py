@@ -18,6 +18,7 @@ line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_d
 # print(line_text_new_data)
 
 week_data_array = db.print_week_data()
+line_text_week_data = week_data_array[0] + "\n" + week_data_array[1] + "\n" + week_data_array[2] + "\n" + week_data_array[3] + "\n" + week_data_array[4] + "\n" + week_data_array[5] + "\n" + week_data_array[6] + "\n\n" + "https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html"
 
 app = Flask(__name__)
 
