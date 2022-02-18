@@ -50,10 +50,25 @@ def callback():
 # LINEでMessageEventが起こった場合に、def以下の関数を実行する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if event == "最新":
+    text = event.message.text
+    if text in ['最新', '最新情報']:
         line_bot_api.reply_message(
             event.reply_token,
-            TextSendMessage(text="最新だよ！".message.text))
+            TextSendMessage(text="最新だよ！")
+        )
+    elif text in ['1週間', '１週間', '一週間', 'week']:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="1週間だよ！")
+        )
+    else:
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！")
+        )
+    # line_bot_api.reply_message(
+    #     event.reply_token,
+    #     TextSendMessage(text=event.message.text))
 
 # ポートの設定
 if __name__ == '__main__':
