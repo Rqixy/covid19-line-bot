@@ -1,4 +1,3 @@
 Flask
 line-bot-sdk
 selenium
-chromedriver-binary-auto

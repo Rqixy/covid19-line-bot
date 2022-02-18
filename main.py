@@ -15,6 +15,7 @@ import db
 # データベースから最新のデータ情報を持ってくる
 new_data_array = db.print_new_data()
 line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3]
+# print(line_text_new_data)
 
 app = Flask(__name__)
 
