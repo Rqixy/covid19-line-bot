@@ -77,10 +77,6 @@ def print_data():
 
 
 # create_db()
-print_data()
+# print_data()
 
 insert_data()
-
-
-# create_db()
-print_data()
