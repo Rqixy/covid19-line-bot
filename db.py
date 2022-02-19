@@ -1,13 +1,15 @@
 import scraping
 import sqlite3
+import psycopg2
 from datetime import datetime, timedelta
+import os
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 # 感染者データベース作成
 def create_infected_table():
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     # データベースにテーブルが存在しなかったら作成する
@@ -29,9 +31,8 @@ def create_infected_table():
 
 # ユーザーテーブル作成
 def create_user_table():
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     # データベースにテーブルが存在しなかったら作成する
@@ -51,9 +52,8 @@ def create_user_table():
 
 # 感染者データの追加
 def insert_infected_data():
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     # スクレイピング結果を配列で取得する
@@ -67,7 +67,7 @@ def insert_infected_data():
     yesterday_date = date + "(" + weekdays[weekday] + ")"
     result_array.append(yesterday_date)
     
-    sql = "INSERT INTO infected_people (new_people, severe_people, deaths, created_at) VALUES (?, ?, ?, ?)"
+    sql = "INSERT INTO infected_people (new_people, severe_people, deaths, created_at) VALUES (%s, %s, %s, %s)"
     # データベースにデータを格納する
     cur.execute(sql, result_array)
     con.commit()
@@ -79,7 +79,7 @@ def insert_infected_data():
         sql = "SELECT * FROM infected_people LIMIT 1"
         for row in cur.execute(sql):
             first_data = str(row[0])
-        cur.execute("DELETE FROM infected_people WHERE id = ?" , (first_data,))
+        cur.execute("DELETE FROM infected_people WHERE id = %s" , (first_data,))
         con.commit()
 
     cur.close()
@@ -87,15 +87,14 @@ def insert_infected_data():
 
 # user_idを取ってきてテーブルに格納する
 def insert_user_data(user_id):
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     now = datetime.now().isoformat()
     result_array = [user_id, now]
 
-    sql = "INSERT INTO user (user_id, created_at) VALUES (?, ?)"
+    sql = "INSERT INTO user (user_id, created_at) VALUES (%s, %s)"
     # データベースにデータを格納する
     cur.execute(sql, result_array)
     con.commit()
@@ -105,9 +104,8 @@ def insert_user_data(user_id):
 
 # テーブル確認
 def print_infected_data():
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     sql = "SELECT * FROM infected_people"
@@ -121,9 +119,8 @@ def print_infected_data():
 
     # 最新の感染情報だけを取得して返す
 def print_new_infected_data():
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     new_data = []
@@ -138,9 +135,8 @@ def print_new_infected_data():
 
 # 1週間分の感染情報を取得して返す
 def print_week_infected_data():
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     week_data = []
@@ -155,9 +151,8 @@ def print_week_infected_data():
 
 # user_idを配列で取得して返す
 def print_user_id():
-    db_name = 'infected_people.db'
     # データベースを作成する
-    con = sqlite3.connect(db_name)
+    con = psycopg2.connect(DATABASE_URL, sslmode='require')
     cur = con.cursor()
 
     sql = "SELECT * FROM user"
@@ -171,8 +166,8 @@ def print_user_id():
 
 
 
-# create_infected_table()
-# create_user_table()
+create_infected_table()
+create_user_table()
 
 # user_id = 'U6db81b1f3a83373e0ee315628b191fb5'
 
