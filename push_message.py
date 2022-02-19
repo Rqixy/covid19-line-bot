@@ -7,7 +7,7 @@ import db
 
 
 # 新しいデータをスクレイピングして取ってくる
-# db.insert_infected_data()
+db.insert_infected_data()
 # データベースから最新のデータ情報を持ってくる
 new_data_array = db.print_new_infected_data()
 line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
