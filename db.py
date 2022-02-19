@@ -6,6 +6,8 @@ import os
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
+PostgreSQLに変更する
+
 # 感染者データベース作成
 def create_infected_table():
     # データベースを作成する
@@ -169,7 +171,6 @@ def print_user_id():
 create_infected_table()
 create_user_table()
 
-# user_id = 'U6db81b1f3a83373e0ee315628b191fb5'
 
 # insert_user_data(user_id=user_id)
 # print(print_user_id())
