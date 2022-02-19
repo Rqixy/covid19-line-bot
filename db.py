@@ -171,7 +171,10 @@ def print_user_id():
 
 
 
-create_infected_table()
-create_user_table()
+# create_infected_table()
+# create_user_table()
 
+# user_id = 'U6db81b1f3a83373e0ee315628b191fb5'
+
+# insert_user_data(user_id=user_id)
 # print(print_user_id())
