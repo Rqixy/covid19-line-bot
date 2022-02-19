@@ -79,37 +79,64 @@ def handle_message(event):
     text = event.message.text
     if text == 'buttons':
         buttons_template = ButtonsTemplate(
-            title='My buttons sample', text='Hello, my buttons', actions=[
+            title='My buttons sample',
+            text='Hello, my buttons',
+            actions=[
                 URIAction(label='Go to line.me', uri='https://line.me'),
                 PostbackAction(label='ping', data='ping'),
                 PostbackAction(label='ping with text', data='ping', text='ping'),
                 MessageAction(label='Translate Rice', text='米')
-            ])
-        template_message = TemplateSendMessage(
-            alt_text='Buttons alt text', template=buttons_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
-        
-    elif text == '最新' or text == '最新情報':
-        confirm_template = ConfirmTemplate(
-            text=line_text_new_data,
-            actions=[
-                MessageAction(label="最新", text="最新"),
-                MessageAction(label="1週間", text="1週間")
             ]
         )
-        template_message = TemplateSendMessage(alt_text='New infected people data text', template=confirm_template)
+        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
+
+    elif text == '最新' or text == '最新情報':
+        # confirm_template = ConfirmTemplate(
+        #     text=line_text_new_data,
+        #     actions=[
+        #         MessageAction(label="最新", text="最新"),
+        #         MessageAction(label="1週間", text="1週間")
+        #     ]
+        # )
+        # template_message = TemplateSendMessage(alt_text='New infected people data text', template=confirm_template)
+        # line_bot_api.reply_message(event.reply_token, template_message)
+
+        buttons_template = ButtonsTemplate(
+            title='コロナ感染最新情報',
+            text=line_text_new_data,
+            actions=[
+                MessageAction(label='最新情報', text='最新情報'),
+                MessageAction(label='1週間', text='1週間'),
+                URIAction(label='詳しい感染状況はこちらから', uri='https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html'),
+            ]
+        )
+        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
         
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
-        confirm_template = ConfirmTemplate(
-            text=line_text_week_data, 
+        # confirm_template = ConfirmTemplate(
+        #     text=line_text_week_data, 
+        #     actions=[
+        #         MessageAction(label="最新", text="最新"),
+        #         MessageAction(label="1週間", text="1週間")
+        #     ]
+        # )
+        # template_message = TemplateSendMessage(alt_text='One week infected people data text', template=confirm_template)
+        # line_bot_api.reply_message(event.reply_token, template_message)
+
+        buttons_template = ButtonsTemplate(
+            title='1週間のコロナ感染最新情報',
+            text=line_text_week_data,
             actions=[
-                MessageAction(label="最新", text="最新"),
-                MessageAction(label="1週間", text="1週間")
+                MessageAction(label='最新情報', text='最新情報'),
+                MessageAction(label='1週間', text='1週間'),
+                URIAction(label='詳しい感染状況はこちらから', uri='https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html'),
             ]
         )
-        template_message = TemplateSendMessage(alt_text='One week infected people data text', template=confirm_template)
+        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
+        
 
     else:
         confirm_template = ConfirmTemplate(
@@ -120,6 +147,18 @@ def handle_message(event):
             ]
         )
         template_message = TemplateSendMessage(alt_text='error text', template=confirm_template)
+        line_bot_api.reply_message(event.reply_token, template_message)
+
+        buttons_template = ButtonsTemplate(
+            title='入力が間違っています！',
+            text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n",
+            actions=[
+                MessageAction(label='最新情報', text='最新情報'),
+                MessageAction(label='1週間', text='1週間'),
+                URIAction(label='詳しい感染状況はこちらから', uri='https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html'),
+            ]
+        )
+        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
 # ポートの設定
