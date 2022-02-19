@@ -1,4 +1,5 @@
 from cProfile import label
+import profile
 from flask import Flask, request, abort
 
 from linebot import (
@@ -67,9 +68,12 @@ def make_quick_reply(token, text):
 # 友達追加したときの処理とメッセージにボタン追加する処理をする
 @handler.add(FollowEvent)
 def handle_follow(event):
-    user_id = line_bot_api.get_profile(event.source.user_id)
+    # ユーザーIDを取得する
+    profile = line_bot_api.get_profile(event.source.user_id)
+    user_id = profile.user_id
+
     # quick replyを表示する
-    make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n毎朝7時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n" + str(user_id))
+    make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n正午に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n" + str(user_id))
 
 
 # Lineのメッセージの取得と返信内容の設定
