@@ -86,7 +86,15 @@ def handle_message(event):
 
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
         make_quick_reply(event.reply_token, text=line_text_week_data)
-        
+    
+    #debug用終わったら消す！！
+    elif text == 'data':
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="debug insert data"))
+        db.insert_infected_data()
+        profile = line_bot_api.get_profile(event.source.user_id)
+        user_id = profile.user_id
+        db.insert_user_data(user_id=user_id)
+
     else:
         make_quick_reply(event.reply_token, text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
         
