@@ -10,8 +10,8 @@ from linebot.exceptions import (
 from linebot.models import (
     FollowEvent, MessageEvent, TextMessage,
     TemplateSendMessage, ConfirmTemplate, MessageAction,
-    TextSendMessage, PostbackEvent,
-    QuickReply, QuickReplyButton
+    TextSendMessage, PostbackEvent, ButtonsTemplate,
+    QuickReply, QuickReplyButton, URIAction,
 
 )
 from linebot.models.actions import PostbackAction
@@ -77,16 +77,18 @@ def make_quick_reply(token, text):
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     text = event.message.text
-    if text == 'confirm':
-        confirm_template = ConfirmTemplate(
-            text='Do it?',
-            actions=[
-            MessageAction(label='Yes', text='Yes!'),
-            MessageAction(label='No', text='No!'),
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='Confirm alt text', template=confirm_template)
+    if text == 'buttons':
+        buttons_template = ButtonsTemplate(
+            title='My buttons sample', text='Hello, my buttons', actions=[
+                URIAction(label='Go to line.me', uri='https://line.me'),
+                PostbackAction(label='ping', data='ping'),
+                PostbackAction(label='ping with text', data='ping', text='ping'),
+                MessageAction(label='Translate Rice', text='米')
+            ])
+        template_message = TemplateSendMessage(
+            alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
+        
     elif text == '最新' or text == '最新情報':
         confirm_template = ConfirmTemplate(
             text=line_text_new_data,
