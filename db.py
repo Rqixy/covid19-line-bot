@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 
 # 感染者データベース作成
-def create_data_db():
+def create_infected_table():
     db_name = 'infected_people.db'
     # データベースを作成する
     con = sqlite3.connect(db_name)
@@ -26,16 +26,17 @@ def create_data_db():
     cur.close()
     con.close()
 
-# ユーザーデータベース作成
-def create_user_db():
-    db_name = 'user.db'
+
+# ユーザーテーブル作成
+def create_user_table():
+    db_name = 'infected_people.db'
     # データベースを作成する
     con = sqlite3.connect(db_name)
     cur = con.cursor()
 
     # データベースにテーブルが存在しなかったら作成する
     sql = """
-        CREATE TABLE IF NOT EXISTS user.db (
+        CREATE TABLE IF NOT EXISTS user (
             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
             user_id STRING NOT NULL,
             created_at STRING NOT NULL
@@ -47,13 +48,13 @@ def create_user_db():
     cur.close()
     con.close()
 
-# データの追加
-def insert_data():
+
+# 感染者データの追加
+def insert_infected_data():
     db_name = 'infected_people.db'
     # データベースを作成する
     con = sqlite3.connect(db_name)
     cur = con.cursor()
-
 
     # スクレイピング結果を配列で取得する
     result_array = scraping.infected_people_scraping()
@@ -65,12 +66,11 @@ def insert_data():
     weekdays = ["月", "火", "水", "木", "金", "土", "日"]
     yesterday_date = date + "(" + weekdays[weekday] + ")"
     result_array.append(yesterday_date)
-    print(result_array)
     
     sql = "INSERT INTO infected_people (new_people, severe_people, deaths, created_at) VALUES (?, ?, ?, ?)"
     # データベースにデータを格納する
     cur.execute(sql, result_array)
-    con.commit
+    con.commit()
 
     cur.execute("SELECT * FROM infected_people")
     count = len(cur.fetchall())
@@ -85,8 +85,26 @@ def insert_data():
     cur.close()
     con.close()
 
+# user_idを取ってきてテーブルに格納する
+def insert_user_data(user_id):
+    db_name = 'infected_people.db'
+    # データベースを作成する
+    con = sqlite3.connect(db_name)
+    cur = con.cursor()
+
+    now = datetime.now().isoformat()
+    result_array = [user_id, now]
+
+    sql = "INSERT INTO user (user_id, created_at) VALUES (?, ?)"
+    # データベースにデータを格納する
+    cur.execute(sql, result_array)
+    con.commit()
+
+    cur.close()
+    con.close()
+
 # テーブル確認
-def print_data():
+def print_infected_data():
     db_name = 'infected_people.db'
     # データベースを作成する
     con = sqlite3.connect(db_name)
@@ -102,7 +120,7 @@ def print_data():
 
 
     # 最新の感染情報だけを取得して返す
-def print_new_data():
+def print_new_infected_data():
     db_name = 'infected_people.db'
     # データベースを作成する
     con = sqlite3.connect(db_name)
@@ -118,7 +136,8 @@ def print_new_data():
 
     return new_data
 
-def print_week_data():
+# 1週間分の感染情報を取得して返す
+def print_week_infected_data():
     db_name = 'infected_people.db'
     # データベースを作成する
     con = sqlite3.connect(db_name)
@@ -134,16 +153,25 @@ def print_week_data():
 
     return week_data
 
+# user_idを配列で取得して返す
+def print_user_id():
+    db_name = 'infected_people.db'
+    # データベースを作成する
+    con = sqlite3.connect(db_name)
+    cur = con.cursor()
 
-# create_db()
+    sql = "SELECT * FROM user"
+    user_id = []
+    for row in cur.execute(sql):
+        user_id.append(row[1])
 
-# print_data()
-# print('----------------------')
-# print(print_new_data())
-# print('----------------------')
-# insert_data()
-# print_data()
-# print('----------------------')
-# print(print_new_data())
+    cur.close()
+    con.close()
+    return user_id
 
-# print(print_week_data()[1])
+
+
+create_infected_table()
+create_user_table()
+
+# print(print_user_id())

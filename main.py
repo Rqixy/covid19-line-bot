@@ -10,21 +10,18 @@ from linebot.exceptions import (
 )
 from linebot.models import (
     FollowEvent, MessageEvent, TextMessage,
-    TemplateSendMessage, ConfirmTemplate, MessageAction,
-    TextSendMessage, PostbackEvent, ButtonsTemplate,
-    QuickReply, QuickReplyButton, URIAction,
-
+    TextSendMessage, QuickReply, QuickReplyButton
 )
 from linebot.models.actions import PostbackAction
 import os
 import db
 
 # データベースから最新のデータ情報を持ってくる
-new_data_array = db.print_new_data()
+new_data_array = db.print_new_infected_data()
 line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
 # print(line_text_new_data)
 
-week_data_array = db.print_week_data()
+week_data_array = db.print_week_infected_data()
 line_text_week_data = week_data_array[0] + "\n" + week_data_array[1] + "\n" + week_data_array[2] + "\n" + week_data_array[3] + "\n" + week_data_array[4] + "\n" + week_data_array[5] + "\n" + week_data_array[6] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
 
 
@@ -58,6 +55,7 @@ def callback():
     # handleの処理を終えればOK
     return 'OK'
 
+# クイックリプライの処理
 def make_quick_reply(token, text):
     items = []
     items.append(QuickReplyButton(action=PostbackAction(label='最新情報', data='最新情報', text='最新情報')))
@@ -72,12 +70,14 @@ def handle_follow(event):
     profile = line_bot_api.get_profile(event.source.user_id)
     user_id = profile.user_id
 
+    # データベースにuser_idを格納する
+    db.insert_user_data(user_id)
+
     # quick replyを表示する
-    make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n正午に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n" + str(user_id))
+    make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n正午に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
 
 
 # Lineのメッセージの取得と返信内容の設定
-# LINEでMessageEventが起こった場合に、def以下の関数を実行する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     text = event.message.text
