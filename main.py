@@ -20,11 +20,11 @@ import db
 
 # データベースから最新のデータ情報を持ってくる
 new_data_array = db.print_new_data()
-line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n"
+line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
 # print(line_text_new_data)
 
 week_data_array = db.print_week_data()
-line_text_week_data = week_data_array[0] + "\n" + week_data_array[1] + "\n" + week_data_array[2] + "\n" + week_data_array[3] + "\n" + week_data_array[4] + "\n" + week_data_array[5] + "\n" + week_data_array[6] + "\n"
+line_text_week_data = week_data_array[0] + "\n" + week_data_array[1] + "\n" + week_data_array[2] + "\n" + week_data_array[3] + "\n" + week_data_array[4] + "\n" + week_data_array[5] + "\n" + week_data_array[6] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
 
 
 app = Flask(__name__)
@@ -57,14 +57,6 @@ def callback():
     # handleの処理を終えればOK
     return 'OK'
 
-
-# 友達追加したときの処理とメッセージにボタン追加する処理をする
-
-@handler.add(FollowEvent)
-def handle_follow(event):
-    # quick replyを表示する
-    make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n毎朝7時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
-
 def make_quick_reply(token, text):
     items = []
     items.append(QuickReplyButton(action=PostbackAction(label='最新情報', data='最新情報', text='最新情報')))
@@ -72,63 +64,27 @@ def make_quick_reply(token, text):
     messages = TextSendMessage(text=text, quick_reply=QuickReply(items=items))
     line_bot_api.reply_message(token, messages=messages)
 
+# 友達追加したときの処理とメッセージにボタン追加する処理をする
+@handler.add(FollowEvent)
+def handle_follow(event):
+    # quick replyを表示する
+    make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n毎朝7時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
+
+
 # Lineのメッセージの取得と返信内容の設定
 # LINEでMessageEventが起こった場合に、def以下の関数を実行する
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     text = event.message.text
-    if text == 'buttons':
-        buttons_template = ButtonsTemplate(
-            title='My buttons sample',
-            text='Hello, my buttons',
-            actions=[
-                MessageAction(label='Translate Rice', text='米'),
-                URIAction(label='Go to line.me', uri='https://line.me'),
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
+    if text == '最新' or text == '最新情報':
+        make_quick_reply(event.reply_token, text=line_text_new_data)
 
-    elif text == '最新' or text == '最新情報':
-        buttons_template = ButtonsTemplate(
-            title='コロナ感染最新情報',
-            text=line_text_new_data,
-            actions=[
-                MessageAction(label='最新情報', text='最新情報'),
-                MessageAction(label='1週間', text='1週間'),
-                URIAction(label='詳しい感染状況はこちらから', uri='https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html'),
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
-        
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
-        buttons_template = ButtonsTemplate(
-            title='1週間のコロナ感染最新情報',
-            text=line_text_week_data,
-            actions=[
-                MessageAction(label='最新情報', text='最新情報'),
-                MessageAction(label='1週間', text='1週間'),
-                URIAction(label='詳しい感染状況はこちらから', uri='https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html'),
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
+        make_quick_reply(event.reply_token, text=line_text_new_data)
         
-
     else:
-        buttons_template = ButtonsTemplate(
-            title='入力が間違っています！',
-            text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n",
-            actions=[
-                MessageAction(label='最新情報', text='最新情報'),
-                MessageAction(label='1週間', text='1週間'),
-                URIAction(label='詳しい感染状況はこちらから', uri='https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html'),
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
-
+        make_quick_reply(event.reply_token, text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
+        
 # ポートの設定
 if __name__ == '__main__':
     # app.run()
