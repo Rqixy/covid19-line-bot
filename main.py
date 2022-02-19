@@ -20,11 +20,11 @@ import db
 
 # データベースから最新のデータ情報を持ってくる
 new_data_array = db.print_new_data()
-line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n詳しくは下記のURLから確認してね！" + "\n\n" + "https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html"
+line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n"
 # print(line_text_new_data)
 
 week_data_array = db.print_week_data()
-line_text_week_data = week_data_array[0] + "\n" + week_data_array[1] + "\n" + week_data_array[2] + "\n" + week_data_array[3] + "\n" + week_data_array[4] + "\n" + week_data_array[5] + "\n" + week_data_array[6] + "\n詳しくは下記のURLから確認してね！" + "\n\n" + "https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html"
+line_text_week_data = week_data_array[0] + "\n" + week_data_array[1] + "\n" + week_data_array[2] + "\n" + week_data_array[3] + "\n" + week_data_array[4] + "\n" + week_data_array[5] + "\n" + week_data_array[6] + "\n"
 
 
 app = Flask(__name__)
@@ -82,26 +82,14 @@ def handle_message(event):
             title='My buttons sample',
             text='Hello, my buttons',
             actions=[
+                MessageAction(label='Translate Rice', text='米'),
                 URIAction(label='Go to line.me', uri='https://line.me'),
-                PostbackAction(label='ping', data='ping'),
-                PostbackAction(label='ping with text', data='ping', text='ping'),
-                MessageAction(label='Translate Rice', text='米')
             ]
         )
         template_message = TemplateSendMessage(alt_text='Buttons alt text', template=buttons_template)
         line_bot_api.reply_message(event.reply_token, template_message)
 
     elif text == '最新' or text == '最新情報':
-        # confirm_template = ConfirmTemplate(
-        #     text=line_text_new_data,
-        #     actions=[
-        #         MessageAction(label="最新", text="最新"),
-        #         MessageAction(label="1週間", text="1週間")
-        #     ]
-        # )
-        # template_message = TemplateSendMessage(alt_text='New infected people data text', template=confirm_template)
-        # line_bot_api.reply_message(event.reply_token, template_message)
-
         buttons_template = ButtonsTemplate(
             title='コロナ感染最新情報',
             text=line_text_new_data,
