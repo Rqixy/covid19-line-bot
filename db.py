@@ -3,8 +3,8 @@ import sqlite3
 from datetime import datetime, timedelta
 
 
-# データベース作成
-def create_db():
+# 感染者データベース作成
+def create_data_db():
     db_name = 'infected_people.db'
     # データベースを作成する
     con = sqlite3.connect(db_name)
@@ -17,6 +17,27 @@ def create_db():
             new_people INTEGER NOT NULL,
             severe_people INTEGER NOT NULL,
             deaths INTEGER NOT NULL,
+            created_at STRING NOT NULL
+        );
+    """
+    cur.execute(sql)
+    con.commit()
+
+    cur.close()
+    con.close()
+
+# ユーザーデータベース作成
+def create_user_db():
+    db_name = 'user.db'
+    # データベースを作成する
+    con = sqlite3.connect(db_name)
+    cur = con.cursor()
+
+    # データベースにテーブルが存在しなかったら作成する
+    sql = """
+        CREATE TABLE IF NOT EXISTS user.db (
+            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+            user_id STRING NOT NULL,
             created_at STRING NOT NULL
         );
     """
