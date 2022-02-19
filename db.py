@@ -112,10 +112,5 @@ def print_user_id():
     return user_id
 
 
-
-create_infected_table()
-create_user_table()
-
-
 # insert_user_data(user_id=user_id)
 # print(print_user_id())
