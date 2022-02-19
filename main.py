@@ -67,8 +67,8 @@ def handle_follow(event):
 
 def make_quick_reply(token, text):
     items = []
-    items.append(QuickReplyButton(action=PostbackAction(label='start', data='start')))
-    items.append(QuickReplyButton(action=PostbackAction(label='end', data='end')))
+    items.append(QuickReplyButton(action=PostbackAction(label='最新情報', data='最新情報', text='最新情報')))
+    items.append(QuickReplyButton(action=PostbackAction(label='1週間', data='1週間', text='1週間')))
     messages = TextSendMessage(text=text, quick_reply=QuickReply(items=items))
     line_bot_api.reply_message(token, messages=messages)
 
@@ -103,16 +103,6 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, template_message)
         
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
-        # confirm_template = ConfirmTemplate(
-        #     text=line_text_week_data, 
-        #     actions=[
-        #         MessageAction(label="最新", text="最新"),
-        #         MessageAction(label="1週間", text="1週間")
-        #     ]
-        # )
-        # template_message = TemplateSendMessage(alt_text='One week infected people data text', template=confirm_template)
-        # line_bot_api.reply_message(event.reply_token, template_message)
-
         buttons_template = ButtonsTemplate(
             title='1週間のコロナ感染最新情報',
             text=line_text_week_data,
@@ -127,16 +117,6 @@ def handle_message(event):
         
 
     else:
-        confirm_template = ConfirmTemplate(
-            text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n", 
-            actions=[
-                MessageAction(label="最新", text="最新"),
-                MessageAction(label="1週間", text="1週間")
-            ]
-        )
-        template_message = TemplateSendMessage(alt_text='error text', template=confirm_template)
-        line_bot_api.reply_message(event.reply_token, template_message)
-
         buttons_template = ButtonsTemplate(
             title='入力が間違っています！',
             text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n",
