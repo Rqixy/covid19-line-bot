@@ -8,9 +8,13 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    MessageEvent, TextMessage,
+    FollowEvent, MessageEvent, TextMessage,
     TemplateSendMessage, ConfirmTemplate, MessageAction,
+    TextSendMessage, PostbackEvent,
+    QuickReply, QuickReplyButton
+
 )
+from linebot.models.actions import PostbackAction
 import os
 import db
 
@@ -53,17 +57,20 @@ def callback():
     # handleの処理を終えればOK
     return 'OK'
 
-# @handler.add(FollowEvent)
-# def handle_follow(event):
-#     confirm_template = ConfirmTemplate(
-#         text="友達追加ありがとうございいます！\n\n毎朝7時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1週間\"を入力してね！\n\nまた下のボタンからでも確認できるよ！\n\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n詳しくはこちらのサイトから確認してね！",
-#         actions=[
-#             MessageAction(label="最新", text=line_text_new_data),
-#             MessageAction(label="1週間", text=line_text_week_data)
-#         ]
-#     )
-#     template_message = TemplateSendMessage(alt_text='add friend text', template=confirm_template)
-#     line_bot_api.reply_message(event.reply_token, template_message)
+
+# 友達追加したときの処理とメッセージにボタン追加する処理をする
+
+@handler.add(FollowEvent)
+def handle_follow(event):
+    # quick replyを表示する
+    make_quick_reply(event.reply_token, text="クイックリプライを表示しています。")
+
+def make_quick_reply(token, text):
+    items = []
+    items.append(QuickReplyButton(action=PostbackAction(label='start', data='start')))
+    items.append(QuickReplyButton(action=PostbackAction(label='end', data='end')))
+    messages = TextSendMessage(text=text, quick_reply=QuickReply(items=items))
+    line_bot_api.reply_message(token, messages=messages)
 
 # Lineのメッセージの取得と返信内容の設定
 # LINEでMessageEventが起こった場合に、def以下の関数を実行する
@@ -71,30 +78,32 @@ def callback():
 def handle_message(event):
     text = event.message.text
     if text == 'confirm':
-        confirm_template = ConfirmTemplate(text='Do it?', actions=[
+        confirm_template = ConfirmTemplate(
+            text='Do it?',
+            actions=[
             MessageAction(label='Yes', text='Yes!'),
             MessageAction(label='No', text='No!'),
-        ])
+            ]
+        )
         template_message = TemplateSendMessage(alt_text='Confirm alt text', template=confirm_template)
         line_bot_api.reply_message(event.reply_token, template_message)
-        
     elif text == '最新' or text == '最新情報':
         confirm_template = ConfirmTemplate(
             text=line_text_new_data,
             actions=[
-                MessageAction(label="最新", text=line_text_new_data),
-                MessageAction(label="1週間", text=line_text_week_data)
+                MessageAction(label="最新", text="最新"),
+                MessageAction(label="1週間", text="1週間")
             ]
         )
         template_message = TemplateSendMessage(alt_text='New infected people data text', template=confirm_template)
         line_bot_api.reply_message(event.reply_token, template_message)
-
+        
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
         confirm_template = ConfirmTemplate(
             text=line_text_week_data, 
             actions=[
-                MessageAction(label="最新", text=line_text_new_data),
-                MessageAction(label="1週間", text=line_text_week_data)
+                MessageAction(label="最新", text="最新"),
+                MessageAction(label="1週間", text="1週間")
             ]
         )
         template_message = TemplateSendMessage(alt_text='One week infected people data text', template=confirm_template)
@@ -104,8 +113,8 @@ def handle_message(event):
         confirm_template = ConfirmTemplate(
             text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n", 
             actions=[
-                MessageAction(label="最新", text=line_text_new_data),
-                MessageAction(label="1週間", text=line_text_week_data)
+                MessageAction(label="最新", text="最新"),
+                MessageAction(label="1週間", text="1週間")
             ]
         )
         template_message = TemplateSendMessage(alt_text='error text', template=confirm_template)
