@@ -81,13 +81,13 @@ def print_new_infected_data():
     # データベースに接続する
     # with psycopg2.connect(DATABASE_URL) as conn:
     #     with conn.cursor() as curs:
-    #         curs.execute("SELECT * FROM infected_people ORDER BY * DESC LIMIT 1;")
+    #         curs.execute("SELECT * FROM infected_people ORDER BY id LIMIT 1;")
 
     con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
     new_data = []
-    sql = "SELECT * FROM infected_people ORDER BY * DESC LIMIT 1;"
+    sql = "SELECT * FROM infected_people ORDER BY id LIMIT 1;"
     for row in cur.execute(sql):
         new_data = [row[4], "新規感染者：" + str(row[1]) + "人", "重症者：" + str(row[2]) + "人", "死亡者：" + str(row[3]) + "人"]
 
