@@ -96,6 +96,10 @@ def print_user_id():
                 user_id.append(row[1])
             return user_id
 
+
+
+
+
 # debug用テーブル確認
 def print_infected_data():
     # データベースに接続する
