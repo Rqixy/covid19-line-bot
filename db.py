@@ -10,7 +10,7 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 
 # 感染者データの追加
 def insert_infected_data():
-    # データベースを作成する
+    # データベースに接続する
     conn = psycopg2.connect(DATABASE_URL)
     cur = conn.cursor()
 
@@ -46,7 +46,7 @@ def insert_infected_data():
 
 # user_idを取ってきてテーブルに格納する
 def insert_user_data(user_id):
-    # データベースを作成する
+    # データベースに接続する
     con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
@@ -60,7 +60,10 @@ def insert_user_data(user_id):
 
 # テーブル確認
 def print_infected_data():
-    # データベースを作成する
+    # データベースに接続する
+
+
+
     con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
@@ -75,12 +78,16 @@ def print_infected_data():
 
     # 最新の感染情報だけを取得して返す
 def print_new_infected_data():
-    # データベースを作成する
+    # データベースに接続する
+    # with psycopg2.connect(DATABASE_URL) as conn:
+    #     with conn.cursor() as curs:
+    #         curs.execute("SELECT * FROM infected_people ORDER BY * DESC LIMIT 1;")
+
     con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
     new_data = []
-    sql = "SELECT * FROM infected_people LIMIT 7"
+    sql = "SELECT * FROM infected_people ORDER BY * DESC LIMIT 1;"
     for row in cur.execute(sql):
         new_data = [row[4], "新規感染者：" + str(row[1]) + "人", "重症者：" + str(row[2]) + "人", "死亡者：" + str(row[3]) + "人"]
 
@@ -91,7 +98,7 @@ def print_new_infected_data():
 
 # 1週間分の感染情報を取得して返す
 def print_week_infected_data():
-    # データベースを作成する
+    # データベースに接続する
     con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
@@ -107,7 +114,7 @@ def print_week_infected_data():
 
 # user_idを配列で取得して返す
 def print_user_id():
-    # データベースを作成する
+    # データベースに接続する
     con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
