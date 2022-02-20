@@ -1,6 +1,6 @@
 import scraping
 import psycopg2
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 import os
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
@@ -38,7 +38,8 @@ def insert_infected_data():
     infected_people_array.append(yesterday_data())
 
     #スクレイピングで取得した日付の取得
-    now = datetime.now().isoformat()
+    JST = timezone(timedelta(hours=+9))
+    now = datetime.now(JST).isoformat()
 
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
@@ -60,7 +61,8 @@ def insert_user_data(user_id):
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
             #ユーザーが登録した日付の取得
-            now = datetime.now().isoformat()
+            JST = timezone(timedelta(hours=+9))
+            now = datetime.now(JST).isoformat()
             # user_idをデータベースに登録する
             sql = "INSERT INTO users_id (user_id, created_at) VALUES (%s, %s)"
             curs.execute(sql, (user_id, now))
