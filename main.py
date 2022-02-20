@@ -90,7 +90,7 @@ def handle_unfollow(event):
     # user_id = profile.user_id
     user_id = event.source.user_id
     # データベースから取得したuser_idと一致するuser_idを削除する
-    db.insert_user_data(user_id)
+    db.delete_user_data(user_id)
 
 # ポートの設定
 if __name__ == '__main__':
