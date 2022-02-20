@@ -63,8 +63,9 @@ def callback():
 @handler.add(FollowEvent)
 def handle_follow(event):
     # ユーザーIDを取得する
-    profile = line_bot_api.get_profile(event.source.user_id)
-    user_id = profile.user_id
+    # profile = line_bot_api.get_profile(event.source.user_id)
+    # user_id = profile.user_id
+    user_id = event.source.user_id
     # データベースにuser_idを格納する
     db.insert_user_data(user_id)
     # quick replyを表示する
@@ -85,8 +86,9 @@ def handle_message(event):
 @handler.add(UnfollowEvent)
 def handle_unfollow(event):
     # ユーザーIDを取得する
-    profile = line_bot_api.get_profile(event.source.user_id)
-    user_id = profile.user_id
+    # profile = line_bot_api.get_profile(event.source.user_id)
+    # user_id = profile.user_id
+    user_id = event.source.user_id
     # データベースから取得したuser_idと一致するuser_idを削除する
     db.insert_user_data(user_id)
 
