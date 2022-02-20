@@ -16,10 +16,19 @@ def insert_infected_data():
 
     # スクレイピング結果を配列で取得する
     infected_people_array = scraping.infected_people_scraping()
+
+    # 現在時刻を配列に追加する
+    now = datetime.now()
+    yesterday = now - timedelta(days=1)
+    date = yesterday.strftime("%Y年%m月%d日")
+    weekday = yesterday.weekday()
+    weekdays = ["月", "火", "水", "木", "金", "土", "日"]
+    yesterday_date = date + "(" + weekdays[weekday] + ")"
+    infected_people_array.append(yesterday_date)
     
-    sql = "INSERT INTO infected_people (new_people, severe_people, deaths) VALUES (%s, %s, %s)"
+    sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day) VALUES (%s, %s, %s, %s)"
     # データベースにデータを格納する
-    cur.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2]))
+    cur.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[3]))
     conn.commit()
 
     cur.execute("SELECT * FROM infected_people")
@@ -38,10 +47,10 @@ def insert_infected_data():
 # user_idを取ってきてテーブルに格納する
 def insert_user_data(user_id):
     # データベースを作成する
-    con = psycopg2.connect(DATABASE_URL, sslmode='require')
+    con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
-    sql = "INSERT INTO user (user_id) VALUES (%s)"
+    sql = "INSERT INTO users_id (user_id) VALUES (%s)"
     # データベースにデータを格納する
     cur.execute(sql, user_id)
     con.commit()
@@ -52,7 +61,7 @@ def insert_user_data(user_id):
 # テーブル確認
 def print_infected_data():
     # データベースを作成する
-    con = psycopg2.connect(DATABASE_URL, sslmode='require')
+    con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
     sql = "SELECT * FROM infected_people"
@@ -67,7 +76,7 @@ def print_infected_data():
     # 最新の感染情報だけを取得して返す
 def print_new_infected_data():
     # データベースを作成する
-    con = psycopg2.connect(DATABASE_URL, sslmode='require')
+    con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
     new_data = []
@@ -83,7 +92,7 @@ def print_new_infected_data():
 # 1週間分の感染情報を取得して返す
 def print_week_infected_data():
     # データベースを作成する
-    con = psycopg2.connect(DATABASE_URL, sslmode='require')
+    con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
     week_data = []
@@ -99,10 +108,10 @@ def print_week_infected_data():
 # user_idを配列で取得して返す
 def print_user_id():
     # データベースを作成する
-    con = psycopg2.connect(DATABASE_URL, sslmode='require')
+    con = psycopg2.connect(DATABASE_URL)
     cur = con.cursor()
 
-    sql = "SELECT * FROM user"
+    sql = "SELECT * FROM users_id"
     user_id = []
     for row in cur.execute(sql):
         user_id.append(row[1])
