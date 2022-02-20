@@ -60,6 +60,15 @@ def insert_user_data(user_id):
             sql = "INSERT INTO users_id (user_id) VALUES (%s)"
             curs.execute(sql, (user_id,))
 
+def delete_user_data(user_id):
+    # データベースに接続する
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor() as curs:
+            # 取ってきたuser_idと一致するuser_idのレコードを削除する
+            sql = "DELETE FROM users_id WHERE user_id=%s"
+            curs.execute(sql, (user_id,))
+
+
 # 最新の感染情報だけを取得して返す
 def print_new_infected_data():
     # データベースに接続する
@@ -110,4 +119,3 @@ def print_infected_data():
             for row in curs.fetchall():
                 print_row = [row[4], "新規感染者：" + str(row[1]) + "人", "重症者：" + str(row[2]) + "人", "死亡者：" + str(row[3]) + "人"]
                 print(print_row)
-

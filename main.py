@@ -6,7 +6,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import (
-    FollowEvent, MessageEvent, TextMessage,
+    FollowEvent, UnfollowEvent, MessageEvent, TextMessage,
     TextSendMessage, QuickReply, QuickReplyButton
 )
 from linebot.models.actions import PostbackAction
@@ -82,6 +82,13 @@ def handle_message(event):
         make_quick_reply(event.reply_token, text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
 
 # ブロックしたらデータベースからuser_idを削除する
+@handler.add(UnfollowEvent)
+def handle_unfollow(event):
+    # ユーザーIDを取得する
+    profile = line_bot_api.get_profile(event.source.user_id)
+    user_id = profile.user_id
+    # データベースから取得したuser_idと一致するuser_idを削除する
+    db.insert_user_data(user_id)
 
 # ポートの設定
 if __name__ == '__main__':
