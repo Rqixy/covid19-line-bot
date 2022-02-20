@@ -37,12 +37,15 @@ def insert_infected_data():
     # 配列に昨日の日付を追加する
     infected_people_array.append(yesterday_data())
 
+    #スクレイピングで取得した日付の取得
+    now = datetime.now().isoformat()
+
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
             # スクレイピングで取ってきた配列のデータを格納する
-            sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day) VALUES (%s, %s, %s, %s)"
-            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[3]))
+            sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day, created_at) VALUES (%s, %s, %s, %s, %s)"
+            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[3], now))
 
             # レコードが7個より大きくなったら一番古いレコードを削除する
             curs.execute("SELECT * FROM infected_people")
@@ -56,9 +59,11 @@ def insert_user_data(user_id):
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
+            #ユーザーが登録した日付の取得
+            now = datetime.now().isoformat()
             # user_idをデータベースに登録する
-            sql = "INSERT INTO users_id (user_id) VALUES (%s)"
-            curs.execute(sql, (user_id,))
+            sql = "INSERT INTO users_id (user_id, created_at) VALUES (%s, %s)"
+            curs.execute(sql, (user_id, now))
 
 def delete_user_data(user_id):
     # データベースに接続する
@@ -67,7 +72,6 @@ def delete_user_data(user_id):
             # 取ってきたuser_idと一致するuser_idのレコードを削除する
             sql = "DELETE FROM users_id WHERE user_id=%s"
             curs.execute(sql, (user_id,))
-
 
 # 最新の感染情報だけを取得して返す
 def print_new_infected_data():
