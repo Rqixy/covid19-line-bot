@@ -27,7 +27,7 @@ def first_data_id():
             records = curs.fetchall()
             first_data_id = ""
             for row in records:
-                first_data_id = str(row[0])
+                first_data_id = str(row)
             return first_data_id
 
 # 感染者データの追加
