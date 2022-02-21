@@ -13,13 +13,6 @@ from linebot.models.actions import PostbackAction
 import os
 import db
 
-# # データベースから最新のデータ情報を持ってくる
-# new_data_array = db.print_new_infected_data()
-# line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-
-# week_data_array = db.print_week_infected_data()
-# line_text_week_data = week_data_array[0] + "\n" + week_data_array[1] + "\n" + week_data_array[2] + "\n" + week_data_array[3] + "\n" + week_data_array[4] + "\n" + week_data_array[5] + "\n" + week_data_array[6] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-
 # クイックリプライの処理
 def make_quick_reply(token, text):
     items = []
@@ -63,8 +56,6 @@ def callback():
 @handler.add(FollowEvent)
 def handle_follow(event):
     # ユーザーIDを取得する
-    # profile = line_bot_api.get_profile(event.source.user_id)
-    # user_id = profile.user_id
     user_id = event.source.user_id
     # データベースにuser_idを格納する
     db.insert_user_data(user_id)
@@ -90,8 +81,6 @@ def handle_message(event):
 @handler.add(UnfollowEvent)
 def handle_unfollow(event):
     # ユーザーIDを取得する
-    # profile = line_bot_api.get_profile(event.source.user_id)
-    # user_id = profile.user_id
     user_id = event.source.user_id
     # データベースから取得したuser_idと一致するuser_idを削除する
     db.delete_user_data(user_id)
