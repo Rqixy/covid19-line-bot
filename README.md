@@ -57,5 +57,5 @@ def delete_user_data(user_id):
 ```
 
 
-こちらがLineBotのQRコードになります。良かったら使ってみてください。
+こちらがLineBotのQRコードになります。良かったら使ってみてください。  
 ![LineBot](https://raw.githubusercontent.com/Rqixy/covid19-line-bot/master/covid19-linebot-QRimage.jpg "Covid-19LineBot")
