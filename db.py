@@ -67,6 +67,7 @@ def insert_user_data(user_id):
             sql = "INSERT INTO users_id (user_id, created_at) VALUES (%s, %s)"
             curs.execute(sql, (user_id, now))
 
+# ブロックしたユーザーのidと一致するuser_idを削除する
 def delete_user_data(user_id):
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
