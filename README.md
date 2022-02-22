@@ -5,11 +5,13 @@
 開発環境はPython,PostgreSQL,Heroku,UptimeRobotを利用しています。
 
 情報は[厚生労働省](https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html "covid-19 kokunainohasseijoukyou")こちらからスクレイピングして取ってきております。
-スクレイピングは毎日正午に一度だけ行うようにし、Lineから最新情報を取ってくる時は保存したデータベースから取ってくるようにすることで、負荷を掛けないようにしました。
+スクレイピングは毎日正午に一度だけ行うようにし、Lineから最新情報を取ってくる時は保存したデータベースから取ってくるようにすることで、負荷を掛けないようにしました。  
 スクレピングしているので、サイトからの取得が出来なくなったら、サービス終了とします。
 
-Lineの自動送信を行うために登録した際にUserIdを取得されていただいております。
+Lineの自動送信を行うために登録した際にUserIdを取得されていただいております。  
 ブロックするとUserIdがデータベースから削除されるようになっておりますのでご安心ください。
+
+しかし、個人で作ったものであり、何かあった際に責任取れないので自己責任で登録のほうお願いします。
 
 ```main.py
 # こちらがLineBotを友達追加した時のuser_id取得処理です。
@@ -54,7 +56,6 @@ def delete_user_data(user_id):
             curs.execute(sql, (user_id,))
 ```
 
-しかし、個人で作ったものであり、何かあった際に責任取れないので自己責任で登録のほうお願いします。
 
 こちらがLineBotのQRコードになります。良かったら使ってみてください。
 ![LineBot](https://raw.githubusercontent.com/Rqixy/covid19-line-bot/master/covid19-linebot-QRimage.jpg "Covid-19LineBot")
