@@ -15,7 +15,6 @@ def yesterday_data():
     weekday = yesterday.weekday()
     weekdays = ["月", "火", "水", "木", "金", "土", "日"]
     yesterday_date = date + "(" + weekdays[weekday] + ")"
-
     return yesterday_date
 
 # 一番古いレコードを削除するためのid取得をして返す

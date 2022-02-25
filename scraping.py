@@ -1,4 +1,5 @@
 import time
+from unittest import result
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,12 +14,18 @@ wait = WebDriverWait(driver, 10)
 #スクレイピング部分
 def covid19_scraping(iframe_xpath, scraping_xpath):
     # iframeに入る
-    iframe = driver.find_element_by_xpath(iframe_xpath)
+    iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
     driver.switch_to.frame(iframe)
-    wait.until(EC.visibility_of_element_located((By.XPATH, scraping_xpath)))
+    time.sleep(5)
     # スクレイピングする
-    result = driver.find_element_by_xpath(scraping_xpath)
-    return result
+    result = driver.find_element(by=By.XPATH, value=scraping_xpath)
+    return result.text
+
+# 文字列のから数値型に変換する
+def remove_comma_and_text_to_int(text):
+    text = text.replace(',','')
+    text = int(text)
+    return text
 
 def infected_people_scraping():
     driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
@@ -26,34 +33,31 @@ def infected_people_scraping():
     wait.until(EC.presence_of_all_elements_located)
 
     #新規感染者数
-    new_infected_people_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[1]/iframe'   # 新規感染者のiframe
-    new_infected_people_xpath = '//*[@id="newInfectedKPI"]'
-    new_infected_people_result = covid19_scraping(new_infected_people_iframe_xpath, new_infected_people_xpath).text
+    new_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[1]/iframe'   # 新規感染者のiframe
+    new_xpath = '//*[@id="newInfectedKPI"]'
+    new_people = covid19_scraping(new_iframe_xpath, new_xpath)
     #数値型に変換する
-    new_infected_people_result = new_infected_people_result.replace(',','')
-    new_infected_people_result = int(new_infected_people_result)
+    new_people = remove_comma_and_text_to_int(new_people)
     # 元のフレームに戻る
     driver.switch_to.default_content()
     time.sleep(1)
 
     #重症者数
-    total_severe_people_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[4]/iframe'   # 重症者のiframe
-    total_severe_people_xpath = '//*[@id="GrPh14SevereKPI"]'
-    total_severe_people_result = covid19_scraping(total_severe_people_iframe_xpath, total_severe_people_xpath).text
+    severe_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[4]/iframe'   # 重症者のiframe
+    severe_xpath = '//*[@id="GrPh14SevereKPI"]'
+    severe_people = covid19_scraping(severe_iframe_xpath, severe_xpath)
     #数値型に変換する
-    total_severe_people_result = total_severe_people_result.replace(',','')
-    total_severe_people_result = int(total_severe_people_result)
+    severe_people = remove_comma_and_text_to_int(severe_people)
     # 元のフレームに戻る
     driver.switch_to.default_content()
     time.sleep(1)
 
     #死亡者数
-    total_number_of_deaths_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[3]/iframe'   # 死亡者のiframe
-    total_number_of_deaths_xpath = '//*[@id="GrPh13TotalDeadKPI"]'
-    total_number_of_deaths_result = covid19_scraping(total_number_of_deaths_iframe_xpath, total_number_of_deaths_xpath).text
+    deaths_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[3]/iframe'   # 死亡者のiframe
+    deaths_xpath = '//*[@id="GrPh13TotalDeadKPI"]'
+    deaths = covid19_scraping(deaths_iframe_xpath, deaths_xpath)
     #数値型に変換する
-    total_number_of_deaths_result = total_number_of_deaths_result.replace(',','')
-    total_number_of_deaths_result = int(total_number_of_deaths_result)
+    deaths = remove_comma_and_text_to_int(deaths)
     # 元のフレームに戻る
     driver.switch_to.default_content()
     time.sleep(1)
@@ -61,5 +65,5 @@ def infected_people_scraping():
     driver.quit()
 
     # 配列にスクレイピングしたデータを格納する
-    infected_people_array = [new_infected_people_result, total_severe_people_result, total_number_of_deaths_result]
-    return infected_people_array
+    infected_people = [new_people, severe_people, deaths]
+    return infected_people
