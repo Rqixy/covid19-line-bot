@@ -33,9 +33,10 @@ def infected_people_scraping():
     wait.until(EC.presence_of_all_elements_located)
 
     #更新チェック用の日付を取得する
-    check_day_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[3]/div/iframe'
-    check_day_xpath = '//*[@id="currentDate"]'
-    check_day = covid19_scraping(check_day_iframe_xpath, check_day_xpath)
+    infected_day_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[3]/div/iframe'
+    infected_day_xpath = '//*[@id="currentDate"]'
+    infected_day = covid19_scraping(infected_day_iframe_xpath, infected_day_xpath)
+    infected_day = infected_day + "0:00現在"
     # 元のフレームに戻る
     driver.switch_to.default_content()
     time.sleep(1)
@@ -73,5 +74,5 @@ def infected_people_scraping():
     driver.quit()
 
     # 配列にスクレイピングしたデータを格納する
-    infected_people = [new_people, severe_people, deaths, check_day]
+    infected_people = [new_people, severe_people, deaths, infected_day]
     return infected_people
