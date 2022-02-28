@@ -3,7 +3,8 @@ import psycopg2
 from datetime import datetime, timezone, timedelta
 import os
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+# DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = 'postgres://hrywcubbsumlrp:1d8e9de1654ce9c36b63256d80a2f6128d60b58f6775759074e3467ceab2ebd9@ec2-3-227-195-74.compute-1.amazonaws.com:5432/d3krgubfr1615f'
 
 # 昨日の日付にし、日本語にして返す
 def yesterday_data():
@@ -43,9 +44,10 @@ def insert_infected_data():
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
+
             # スクレイピングで取ってきた配列のデータを格納する
-            sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day, created_at) VALUES (%s, %s, %s, %s, %s)"
-            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[3], now))
+            sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day, created_at, check_day) VALUES (%s, %s, %s, %s, %s, %s)"
+            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], now, infected_people_array[3], infected_people_array[4]))
 
             # レコードが7個より大きくなったら一番古いレコードを削除する
             curs.execute("SELECT * FROM infected_people")
@@ -84,7 +86,7 @@ def print_new_infected_data():
             curs.execute(sql)
             new_data = []
             for row in curs.fetchall():
-                new_data = [row[4], "新規感染者数：" + str(row[1]) + "人", "重症者数(累計)：" + str(row[2]) + "人", "死亡者数(累計)：" + str(row[3]) + "人"]
+                new_data = [row[5], "新規感染者数：" + str(row[1]) + "人", "重症者数(累計)：" + str(row[2]) + "人", "死亡者数(累計)：" + str(row[3]) + "人"]
             return new_data
 
 # 1週間分の感染情報を取得して返す
@@ -96,7 +98,7 @@ def print_week_infected_data():
             curs.execute(sql)
             week_data = []
             for row in curs.fetchall():
-                week_data.append(row[4] + "\n" + "    新規感染者数：" + str(row[1]) + "人" + "\n" + "    重症者数(累計)：" + str(row[2]) + "人" + "\n" + "    死亡者数(累計)：" + str(row[3]) + "人")
+                week_data.append(row[5] + "\n" + "    新規感染者数：" + str(row[1]) + "人" + "\n" + "    重症者数(累計)：" + str(row[2]) + "人" + "\n" + "    死亡者数(累計)：" + str(row[3]) + "人")
             return week_data
 
 # user_idを配列で取得して返す
@@ -123,5 +125,39 @@ def print_infected_data():
             sql = "SELECT * FROM infected_people;"
             curs.execute(sql)
             for row in curs.fetchall():
-                print_row = [row[4], "新規感染者：" + str(row[1]) + "人", "重症者：" + str(row[2]) + "人", "死亡者：" + str(row[3]) + "人"]
+                print_row = [row[5], "新規感染者：" + str(row[1]) + "人", "重症者：" + str(row[2]) + "人", "死亡者：" + str(row[3]) + "人"]
                 print(print_row)
+
+def test_insert():
+    # スクレイピングを行い、配列で取得する
+    infected_people_array = scraping.infected_people_scraping()
+    # 配列に昨日の日付を追加する
+    infected_people_array.append(yesterday_data())
+
+    #スクレイピングで取得した日付の取得
+    JST = timezone(timedelta(hours=+9))
+    now = datetime.now(JST).isoformat()
+
+    # データベースに接続する
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor() as curs:
+
+            # スクレイピングで取ってきた配列のデータを格納する
+            sql = "INSERT INTO test_table (new_people, severe_people, deaths, infected_day, created_at, check_day) VALUES (%s, %s, %s, %s, %s, %s)"
+            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[4], now, infected_people_array[3]))
+
+            # レコードが7個より大きくなったら一番古いレコードを削除する
+            sql = "SELECT * FROM test_table"
+            curs.execute(sql)
+            records = curs.fetchall()
+            counts = len(records)
+            if counts > 7:
+                curs.execute("DELETE FROM test_table WHERE id = %s" , (first_data_id(),))
+
+            curs.execute(sql)
+            new_data = []
+            for row in curs.fetchall():
+                new_data = [row[4], "新規感染者数：" + str(row[1]) + "人", "重症者数(累計)：" + str(row[2]) + "人", "死亡者数(累計)：" + str(row[3]) + "人", row[5]]
+            return new_data
+
+print(test_insert())
