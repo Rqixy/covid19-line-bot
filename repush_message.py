@@ -15,7 +15,7 @@ new_data = db.insert_infected_data()
 if type(new_data) is str:
     sys.exit()
 # もし新しいデータが更新されていなかったらdbのinsert_infected_peopleの配列結果を代入する
-else:
+elif type(new_data) is list:
     # Lineに送る送信メッセージの作成
     line_text_new_data = new_data[0] + "\n" + new_data[1] + "\n" + new_data[2] + "\n" + new_data[3] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
     print(line_text_new_data)
