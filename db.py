@@ -90,7 +90,7 @@ def print_new_infected_data():
             curs.execute(sql)
             new_data = []
             for row in curs.fetchall():
-                new_data = [row[4], "新規感染者数：" + str(row[1]) + "人", "重症者数(累計)：" + str(row[2]) + "人", "死亡者数(累計)：" + str(row[3]) + "人"]
+                new_data = [row[4], "    新規感染者数：" + str(row[1]) + "人", "    重症者数(累計)：" + str(row[2]) + "人", "    死亡者数(累計)：" + str(row[3]) + "人"]
             return new_data
 
 # 1週間分の感染情報を取得して返す
