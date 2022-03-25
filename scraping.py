@@ -16,7 +16,7 @@ def covid19_scraping(iframe_xpath, scraping_xpath):
     # iframeに入る
     iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
     driver.switch_to.frame(iframe)
-    time.sleep(5)
+    time.sleep(1)
     # スクレイピングする
     result = driver.find_element(by=By.XPATH, value=scraping_xpath)
     return result.text
@@ -39,7 +39,6 @@ def infected_people_scraping():
     infected_day = infected_day + "0:00現在"
     # 元のフレームに戻る
     driver.switch_to.default_content()
-    time.sleep(1)
 
     #新規感染者数
     new_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[1]/iframe'   # 新規感染者のiframe
@@ -49,7 +48,6 @@ def infected_people_scraping():
     new_people = remove_comma_and_text_to_int(new_people)
     # 元のフレームに戻る
     driver.switch_to.default_content()
-    time.sleep(1)
 
     #重症者数
     severe_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[4]/iframe'   # 重症者のiframe
@@ -59,7 +57,6 @@ def infected_people_scraping():
     severe_people = remove_comma_and_text_to_int(severe_people)
     # 元のフレームに戻る
     driver.switch_to.default_content()
-    time.sleep(1)
 
     #死亡者数
     deaths_iframe_xpath = '//*[@id="content"]/div[2]/div/div/div[4]/div[3]/iframe'   # 死亡者のiframe
@@ -69,10 +66,11 @@ def infected_people_scraping():
     deaths = remove_comma_and_text_to_int(deaths)
     # 元のフレームに戻る
     driver.switch_to.default_content()
-    time.sleep(1)
 
     driver.quit()
 
     # 配列にスクレイピングしたデータを格納する
     infected_people = [new_people, severe_people, deaths, infected_day]
     return infected_people
+
+print(infected_people_scraping())
