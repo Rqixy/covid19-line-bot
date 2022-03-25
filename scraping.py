@@ -23,7 +23,9 @@ def covid19_scraping(iframe_xpath, scraping_xpath):
 
 # 文字列のから数値型に変換する
 def remove_comma_and_text_to_int(text):
+    print("replace前text = ", text)
     text = text.replace(',','')
+    print("replace後text = ", text)
     text = int(text)
     return text
 
@@ -72,5 +74,3 @@ def infected_people_scraping():
     # 配列にスクレイピングしたデータを格納する
     infected_people = [new_people, severe_people, deaths, infected_day]
     return infected_people
-
-print(infected_people_scraping())
