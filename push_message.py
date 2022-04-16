@@ -1,4 +1,4 @@
-# 午後一時に自動送信するプログラム
+# 午後1時に自動送信するプログラム
 
 from linebot import LineBotApi
 from linebot.models import TextSendMessage, QuickReply, QuickReplyButton
