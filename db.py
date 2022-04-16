@@ -3,7 +3,8 @@ import psycopg2
 from datetime import datetime, timezone, timedelta
 import os
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+# DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = "postgres://hrywcubbsumlrp:1d8e9de1654ce9c36b63256d80a2f6128d60b58f6775759074e3467ceab2ebd9@ec2-3-227-195-74.compute-1.amazonaws.com:5432/d3krgubfr1615f"
 
 # 一番古いレコードを削除するためのid取得をして返す
 def first_data_id():
@@ -22,6 +23,11 @@ def insert_infected_data():
     # スクレイピングを行い、配列で取得する
     infected_people_array = scraping.infected_people_scraping()
 
+    # スクレイピングで情報が取得できていなかったら新しいデータが無いことを送信する
+    if infected_people_array == None:
+        text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
+        return text
+
     #スクレイピングで取得した日付の取得
     JST = timezone(timedelta(hours=+9))
     now = datetime.now(JST).isoformat()
@@ -30,7 +36,7 @@ def insert_infected_data():
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
             # もし新しいデータが入ってこなかったら新しいデータが無いことを送信する
-            sql = "SELECT * FROM infected_people LIMIT 7"
+            sql = "SELECT * FROM infected_people LIMIT 7;"
             curs.execute(sql)
             records = curs.fetchall()
             result = ""
@@ -57,7 +63,7 @@ def insert_infected_data():
             curs.execute(sql)
             new_data = []
             for row in curs.fetchall():
-                new_data = [row[4], "新規感染者数：" + str(row[1]) + "人", "重症者数(累計)：" + str(row[2]) + "人", "死亡者数(累計)：" + str(row[3]) + "人"]
+                new_data = [row[4], "    新規感染者数：" + str(row[1]) + "人", "    重症者数(累計)：" + str(row[2]) + "人", "    死亡者数(累計)：" + str(row[3]) + "人"]
             return new_data
 
 # user_idを取ってきてテーブルに格納する
