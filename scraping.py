@@ -13,19 +13,20 @@ wait = WebDriverWait(driver, 10)
 
 #スクレイピング部分
 def covid19_scraping(iframe_xpath, scraping_xpath):
-    # iframeに入る
-    iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
-    driver.switch_to.frame(iframe)
-    time.sleep(1)
-    # スクレイピングする
-    result = driver.find_element(by=By.XPATH, value=scraping_xpath)
+    #中身が空の場合、取ってこれるまで繰り返す
+    result = None
+    while result == None:
+        # iframeに入る
+        iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
+        driver.switch_to.frame(iframe)
+        time.sleep(1)
+        # スクレイピングする
+        result = driver.find_element(by=By.XPATH, value=scraping_xpath)
     return result.text
 
 # 文字列のから数値型に変換する
 def remove_comma_and_text_to_int(text):
-    print("replace前text = ", text)
     text = text.replace(',','')
-    print("replace後text = ", text)
     text = int(text)
     return text
 
