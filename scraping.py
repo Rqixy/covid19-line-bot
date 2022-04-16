@@ -1,3 +1,4 @@
+from ast import And
 import time
 from unittest import result
 from selenium import webdriver
@@ -11,24 +12,35 @@ driver = webdriver.Chrome(options=options)
 wait = WebDriverWait(driver, 10)
 
 
-#スクレイピング部分
+# スクレイピング部分
 def covid19_scraping(iframe_xpath, scraping_xpath):
-    #中身が空の場合、取ってこれるまで繰り返す
     result = None
-    while result == None:
+    # 中身が空の場合、10回繰り返す(全く取ってこれない場合の無限ループを防ぐため回数制限している)
+    for i in range(10):
         # iframeに入る
         iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
         driver.switch_to.frame(iframe)
         time.sleep(1)
         # スクレイピングする
         result = driver.find_element(by=By.XPATH, value=scraping_xpath)
+        # 中身が取得出来たらループから抜ける
+        if result != None:
+            break
+    
+    # スクレイピング出来なかったらNoneを返す
+    if result == None:
+        return result
+    
+    # スクレイピング成功したらTextを返す
     return result.text
 
 # 文字列のから数値型に変換する
 def remove_comma_and_text_to_int(text):
-    text = text.replace(',','')
-    text = int(text)
-    return text
+    # 中身が空でないなら変換する
+    if text != None:
+        text = text.replace(',','')
+        text = int(text)
+        return text
 
 def infected_people_scraping():
     driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
@@ -71,6 +83,10 @@ def infected_people_scraping():
     driver.switch_to.default_content()
 
     driver.quit()
+
+    # 1つでも中身がちゃんと取得出来ていなかったらNoneを送る
+    if new_people == None or severe_people == None or deaths == None or infected_day == None:
+        return None
 
     # 配列にスクレイピングしたデータを格納する
     infected_people = [new_people, severe_people, deaths, infected_day]
