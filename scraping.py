@@ -88,8 +88,8 @@ def infected_people_scraping():
 
     driver.quit()
 
-    # 1つでも中身がちゃんと取得出来ていなかったらNoneを送る
-    if new_people == None or severe_people == None or deaths == None or infected_day == None:
+    # 1つでも中身が空だったらNoneを送る
+    if new_people == '' or severe_people == '' or deaths == '' or infected_day == '':
         return None
 
     # 配列にスクレイピングしたデータを格納する
