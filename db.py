@@ -1,3 +1,4 @@
+import string
 import scraping
 import psycopg2
 from datetime import datetime, timezone, timedelta
@@ -66,7 +67,7 @@ def insert_infected_data():
             return new_data
 
 # user_idを取ってきてテーブルに格納する
-def insert_user_data(user_id):
+def insert_user_data(user_id: string):
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
@@ -78,7 +79,7 @@ def insert_user_data(user_id):
             curs.execute(sql, (user_id, now))
 
 # ブロックしたユーザーのidと一致するuser_idを削除する
-def delete_user_data(user_id):
+def delete_user_data(user_id: string):
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
