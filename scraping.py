@@ -1,6 +1,5 @@
-from ast import And
+import string
 import time
-from unittest import result
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -11,36 +10,41 @@ options.add_argument('--headless')
 driver = webdriver.Chrome(options=options)
 wait = WebDriverWait(driver, 10)
 
+# テキストが存在しない時のエラー
+class NullTextException(Exception):
+    pass
 
 # スクレイピング部分
-def covid19_scraping(iframe_xpath, scraping_xpath):
-    result = None
-    # 中身が空の場合、10回繰り返す(全く取ってこれない場合の無限ループを防ぐため回数制限している)
-    for i in range(10):
+def covid19_scraping(iframe_xpath: string, scraping_xpath: string) -> string:
+    try:
+        if iframe_xpath == '' or scraping_xpath == '':
+            raise NullTextException('URLが受け取れませんでした。')
         # iframeに入る
         iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
         driver.switch_to.frame(iframe)
         time.sleep(1)
         # スクレイピングする
         result = driver.find_element(by=By.XPATH, value=scraping_xpath)
-        # 中身が取得出来たらループから抜ける
-        if result != None:
-            break
-    
-    # スクレイピング出来なかったらNoneを返す
-    if result == None:
-        return result
-    
-    # スクレイピング成功したらTextを返す
-    return result.text
+        # スクレイピング成功したらTextを返す
+        return result.text
+    except NullTextException as e:
+        print(e)
+    except Exception as e:
+        print('Catch scraping error : ', e)
 
 # 文字列のから数値型に変換する
-def remove_comma_and_text_to_int(text):
-    # 中身が空でないなら変換する
-    if text != None:
+def remove_comma_and_text_to_int(text: string) -> int:
+    try:
+        if text == '':
+            raise NullTextException('テキストが受け取れませんでした。')
+        # 中身が空でないなら変換する
         text = text.replace(',','')
         text = int(text)
         return text
+    except NullTextException as e:
+        print(e)
+    except Exception as e:
+        print('カンマの取り除きとint型に変換が出来ませんでした。: ', e)
 
 def infected_people_scraping():
     driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
@@ -90,4 +94,5 @@ def infected_people_scraping():
 
     # 配列にスクレイピングしたデータを格納する
     infected_people = [new_people, severe_people, deaths, infected_day]
+    print(infected_people)
     return infected_people
