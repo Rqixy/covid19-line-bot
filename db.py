@@ -28,7 +28,7 @@ def insert_infected_data():
         text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
         return text
 
-    #スクレイピングで取得した日付の取得
+    # スクレイピングで取得した日付の取得
     JST = timezone(timedelta(hours=+9))
     now = datetime.now(JST).isoformat()
 
