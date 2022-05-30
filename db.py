@@ -1,3 +1,4 @@
+from array import array
 import string
 import scraping
 import psycopg2
@@ -25,7 +26,7 @@ def insert_infected_data():
 
     # スクレイピングで情報が取得できていなかったら新しいデータが無いことを送信する
     if infected_people_array == None:
-        text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
+        text = "情報が正しく取得されませんでした\n午後6時にもう一度送信されます！"
         return text
 
     # スクレイピングで取得した日付の取得
@@ -93,6 +94,22 @@ def print_new_infected_data():
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
             sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1;"
+            curs.execute(sql)
+            new_data = []
+            for row in curs.fetchall():
+                new_data = [row[4], "    新規感染者数：" + str(row[1]) + "人", "    重症者数(累計)：" + str(row[2]) + "人", "    死亡者数(累計)：" + str(row[3]) + "人"]
+            return new_data
+
+# 引数で与えられた分の前の日を返す
+def print_infected_data(day: int)-> any:
+    # もし数字が範囲外ならエラー
+    if day < 0 or day >= 7:
+        text = "入力された値が範囲外だよ！"
+        return text
+    # データベースに接続する
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor() as curs:
+            sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1 OFFSET " + str(day) + ";"
             curs.execute(sql)
             new_data = []
             for row in curs.fetchall():
