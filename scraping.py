@@ -19,7 +19,7 @@ def covid19_scraping(iframe_xpath: string, scraping_xpath: string) -> string:
         # iframeに入る
         iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
         driver.switch_to.frame(iframe)
-        # time.sleep(1)
+        time.sleep(1)
         # スクレイピングする
         result = driver.find_element(by=By.XPATH, value=scraping_xpath)
         print('result.text : ' + result.text)
