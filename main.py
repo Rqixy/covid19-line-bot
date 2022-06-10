@@ -87,20 +87,20 @@ def handle_message(event):
     if text == '最新' or text == '最新情報':
         day = 0
         token = event.reply_token
-        infected_data_reply(event=token, day=day, line_bot_api=line_bot_api)
+        infected_data_reply(token=token, day=day, line_bot_api=line_bot_api)
     # 一日前の情報を送信する
     elif text == '昨日' or text == '1日前' or text == '一日前' or text == 'yesterday':
         day = 1
         token = event.reply_token
-        infected_data_reply(event=token, day=day, line_bot_api=line_bot_api)
+        infected_data_reply(token=token, day=day, line_bot_api=line_bot_api)
     elif text == '一昨日' or text == '2日前' or text == '二日前':
         day = 2
         token = event.reply_token
-        infected_data_reply(event=token, day=day, line_bot_api=line_bot_api)
+        infected_data_reply(token=token, day=day, line_bot_api=line_bot_api)
     elif text == '3日前' or text == '三日前':
         day = 3
         token = event.reply_token
-        infected_data_reply(event=token, day=day, line_bot_api=line_bot_api)
+        infected_data_reply(token=token, day=day, line_bot_api=line_bot_api)
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
         token = event.reply_token
         week_data_array = db.print_week_infected_data()
