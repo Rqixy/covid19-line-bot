@@ -19,4 +19,6 @@ def make_quick_message(text, line_bot_api, token=None, user_id=None):
         elif user_id != None:
             return line_bot_api.push_message(user_id, messages=messages)
     except Exception as e:
-        print("メッセージエラー発生！ : " + e)
+        print("メッセージエラー発生！ : " + str(type(e)))
+        print("メッセージエラー発生！ : " + e.args)
+        print("メッセージエラー発生！ : " + e.message)
