@@ -31,11 +31,11 @@ def infected_data_reply(token: any, day: int, line_bot_api: any):
     # もし1週間の範囲外の数値が与えられたら範囲外のメッセージを送信する
     if type(new_data_array) is str:
         # make_quick_reply(event.reply_token, text=new_data_array)
-        message.make_quick_message(token=token, text=new_data_array, line_bot_api=line_bot_api)
+        message.make_main_quick_message(token=token, text=new_data_array, line_bot_api=line_bot_api)
         return
     line_text_new_data = new_data_array[0] + "\n" + new_data_array[1] + "\n" + new_data_array[2] + "\n" + new_data_array[3] + "\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
     # make_quick_reply(event.reply_token, text=line_text_new_data)
-    message.make_quick_message(token=token, text=line_text_new_data, line_bot_api=line_bot_api)
+    message.make_main_quick_message(token=token, text=line_text_new_data, line_bot_api=line_bot_api)
 
 app = Flask(__name__)
 
@@ -77,7 +77,7 @@ def handle_follow(event):
     # quick replyを表示する
     token = event.reply_token
     text = "友だち追加ありがとうございます\n\n午後1時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-    message.make_quick_message(token=token, text=text, line_bot_api=line_bot_api)
+    message.make_main_quick_message(token=token, text=text, line_bot_api=line_bot_api)
 
 # Lineのメッセージの取得と返信内容の設定
 @handler.add(MessageEvent, message=TextMessage)
@@ -105,11 +105,11 @@ def handle_message(event):
         token = event.reply_token
         week_data_array = db.print_week_infected_data()
         line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-        message.make_quick_message(token=token, text=line_text_week_data, line_bot_api=line_bot_api)
+        message.make_main_quick_message(token=token, text=line_text_week_data, line_bot_api=line_bot_api)
     else:
         token = event.reply_token
         text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-        message.make_quick_message(token=token, text=text, line_bot_api=line_bot_api)
+        message.make_main_quick_message(token=token, text=text, line_bot_api=line_bot_api)
 
 # ブロックしたらデータベースからuser_idを削除する
 @handler.add(UnfollowEvent)
