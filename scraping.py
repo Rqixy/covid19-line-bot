@@ -1,4 +1,3 @@
-from asyncore import loop
 import string
 import time
 from selenium import webdriver
@@ -14,8 +13,8 @@ wait = WebDriverWait(driver, 10)
 # スクレイピング部分
 def covid19_scraping(iframe_xpath: string, scraping_xpath: string) -> string:
     # 取得出来るまで繰り返す(無限ループ阻止のため最大20回まで)
-    loop = 20
-    for i in range(loop):
+    looping = 20
+    for i in range(looping):
         # iframeに入る
         iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
         driver.switch_to.frame(iframe)
