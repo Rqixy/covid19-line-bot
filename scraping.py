@@ -92,5 +92,5 @@ def infected_people_scraping():
         return infected_people
     except Exception as e:
         # 情報の取得に失敗したら、コンソールにエラーメッセージ表示とNoneを返す
-        print("Error : " + e)
+        print("スクレイピングエラー発生！ : " + e)
         return None
