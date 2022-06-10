@@ -14,7 +14,7 @@ def make_quick_message(text, line_bot_api, token=None, user_id=None):
         messages = TextSendMessage(text=text, quick_reply=QuickReply(items=items))
         # 個人からのメッセージが送られたら
         if token != None and user_id == None:
-            return line_bot_api.push_message(token, messages=messages)
+            return line_bot_api.push_message(str(token), messages=messages)
         # 自動送信でuser_idを受けっとたら
         elif token == None and user_id != None:
             return line_bot_api.push_message(user_id, messages=messages)
