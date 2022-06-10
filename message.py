@@ -3,7 +3,7 @@ from linebot.models import TextSendMessage, QuickReply, QuickReplyButton
 from linebot.models.actions import PostbackAction
 
 # プッシュ用のクイックメッセージの生成メソッド
-def make_quick_message(text: any, line_bot_api: any, token='', user_id=''):
+def make_quick_message(text="", line_bot_api="", token="", user_id=""):
     items = []
     items.append(QuickReplyButton(action=PostbackAction(label='最新情報', data='最新情報', text='最新情報')))
     items.append(QuickReplyButton(action=PostbackAction(label='昨日', data='昨日', text='昨日')))
@@ -12,8 +12,8 @@ def make_quick_message(text: any, line_bot_api: any, token='', user_id=''):
     items.append(QuickReplyButton(action=PostbackAction(label='1週間', data='1週間', text='1週間')))
     messages = TextSendMessage(text=text, quick_reply=QuickReply(items=items))
     # 個人からのメッセージが送られたら
-    if token != '' and user_id == '':
+    if token != "" and user_id == "":
         line_bot_api.push_message(token, messages=messages)
     # 自動送信でuser_idを受けっとたら
-    elif token == '' and user_id != '':
+    elif token == "" and user_id != "":
         line_bot_api.push_message(user_id, messages=messages)
