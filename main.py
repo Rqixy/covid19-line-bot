@@ -98,9 +98,9 @@ def handle_message(event):
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
         week_data_array = db.print_week_infected_data()
         line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-        message.make_quick_message(event.reply_token, text=line_text_week_data, line_bot_api=line_bot_api)
+        message.make_quick_message(token=event.reply_token, text=line_text_week_data, line_bot_api=line_bot_api)
     else:
-        message.make_quick_message(event.reply_token, text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n", line_bot_api=line_bot_api)
+        message.make_quick_message(token=event.reply_token, text="入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n", line_bot_api=line_bot_api)
 
 # ブロックしたらデータベースからuser_idを削除する
 @handler.add(UnfollowEvent)
