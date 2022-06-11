@@ -11,14 +11,13 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 def first_data_id():
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
-            sql = "SELECT * FROM infected_people LIMIT 1"
+            sql = "SELECT * FROM infected_people ORDER BY id LIMIT 1;"
             curs.execute(sql)
             records = curs.fetchall()
             first_data_id = ""
             for row in records:
                 first_data_id = str(row[0])
             return first_data_id
-
 # 感染者データの追加
 def insert_infected_data():
     # スクレイピングを行い、配列で取得する
@@ -29,15 +28,11 @@ def insert_infected_data():
         text = "情報が正しく取得されませんでした\n午後6時にもう一度送信されます！"
         return text
 
-    # スクレイピングで取得した日付の取得
-    JST = timezone(timedelta(hours=+9))
-    now = datetime.now(JST).isoformat()
-
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
             # もし新しいデータが入ってこなかったら新しいデータが無いことを送信する
-            sql = "SELECT * FROM infected_people LIMIT 7;"
+            sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1;"
             curs.execute(sql)
             records = curs.fetchall()
             result = ""
@@ -49,11 +44,11 @@ def insert_infected_data():
                 return text
 
             # スクレイピングで取ってきた配列のデータを格納する
-            sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day, created_at) VALUES (%s, %s, %s, %s, %s)"
-            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[3], now))
+            sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day) VALUES (%s, %s, %s, %s)"
+            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[3]))
 
             # レコードが7個より大きくなったら一番古いレコードを削除する
-            curs.execute("SELECT * FROM infected_people")
+            curs.execute("SELECT * FROM infected_people;")
             records = curs.fetchall()
             counts = len(records)
             if counts > 7:
@@ -109,7 +104,7 @@ def print_week_infected_data():
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
-            sql = "SELECT * FROM infected_people;"
+            sql = "SELECT * FROM infected_people ORDER BY id;"
             curs.execute(sql)
             week_data = []
             for row in curs.fetchall():
@@ -127,3 +122,5 @@ def print_user_id():
             for row in curs.fetchall():
                 user_id.append(row[1])
             return user_id
+
+print(print_week_infected_data())
