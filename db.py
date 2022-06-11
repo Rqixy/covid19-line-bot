@@ -122,5 +122,3 @@ def print_user_id():
             for row in curs.fetchall():
                 user_id.append(row[1])
             return user_id
-
-print(print_week_infected_data())
