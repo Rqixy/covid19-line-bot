@@ -1,9 +1,9 @@
 # 午後1時に自動送信するプログラム
 from linebot import LineBotApi
 import os
-import processes.db as db
+import processing.db as db
 import sys
-import message
+import processing.message as message
 
 # データベースから最新のデータ情報を持ってくる
 new_data = db.insert_infected_data()
