@@ -11,7 +11,7 @@ from linebot.models import (
 )
 from linebot.models.actions import PostbackAction
 import os
-import db
+import processes.db as db
 
 # クイックリプライの処理
 def make_quick_reply(token, text):

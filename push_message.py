@@ -1,7 +1,7 @@
 # 午後1時に自動送信するプログラム
 from linebot import LineBotApi
 import os
-import db
+import processes.db as db
 import sys
 import message
 
