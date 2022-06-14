@@ -107,5 +107,3 @@ def infected_people_scraping():
     except Exception as e:
         print(e)
         return None
-
-print(infected_people_scraping())
