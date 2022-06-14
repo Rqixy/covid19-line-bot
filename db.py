@@ -18,12 +18,13 @@ def first_data_id():
             for row in records:
                 first_data_id = str(row[0])
             return first_data_id
+
 # 感染者データの追加
 def insert_infected_data():
     # スクレイピングを行い、配列で取得する
     infected_people_array = scraping.infected_people_scraping()
 
-    # スクレイピングで情報が取得できていなかったら新しいデータが無いことを送信する
+    # スクレイピングで情報が取得できていなかったら情報を取得できなかったことを送信する
     if infected_people_array == None:
         text = "情報が正しく取得されませんでした\n午後6時にもう一度送信されます！"
         return text
@@ -39,6 +40,8 @@ def insert_infected_data():
             for row in records:
                 result = str(row[4])
 
+            # スクレイピングで新しく取得した日付と、最後のレコードにある日付を比較して
+            # 同じなら更新されていないことを伝える
             if result == infected_people_array[3]:
                 text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
                 return text
@@ -85,7 +88,7 @@ def delete_user_data(user_id: string):
 
 # 引数で与えられたレコードを返す
 def print_infected_data(day: int)-> any:
-    # もし数字が範囲外ならエラー
+    # もし送られてきた数字が１週間の範囲外ならエラー
     if day < 0 or day >= 7:
         text = "入力された値が範囲外だよ！"
         return text
