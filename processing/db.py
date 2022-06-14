@@ -1,6 +1,6 @@
 from array import array
 import string
-import processes.scraping as scraping
+import processing.scraping as scraping
 import psycopg2
 from datetime import datetime, timezone, timedelta
 import os
