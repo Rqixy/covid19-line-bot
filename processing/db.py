@@ -1,11 +1,11 @@
-from array import array
 import string
-import processing.scraping as scraping
+import scraping
 import psycopg2
 from datetime import datetime, timezone, timedelta
 import os
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
+DATABASE_URL = "postgres://hrywcubbsumlrp:1d8e9de1654ce9c36b63256d80a2f6128d60b58f6775759074e3467ceab2ebd9@ec2-3-227-195-74.compute-1.amazonaws.com:5432/d3krgubfr1615f"
 
 # 一番古いレコードを削除するためのid取得をして返す
 def first_data_id():
@@ -125,3 +125,5 @@ def print_user_id():
             for row in curs.fetchall():
                 user_id.append(row[1])
             return user_id
+
+print(insert_infected_data())
