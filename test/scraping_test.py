@@ -6,16 +6,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+# WebDriverの設定
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
 driver = webdriver.Chrome(options=options)
 wait = WebDriverWait(driver, 20)
-
-# スクレイピングするページ読み込み
-def get_website():
-    driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
-    # ページが読み込まれるまで待機
-    wait.until(EC.presence_of_all_elements_located)
 
 # 待機時間
 def sleeping():
@@ -65,33 +60,52 @@ def infected_people_scraping():
         # 配列の初期化
         infected_people = []
 
-        # スクレイピングするページ読み込み
-        get_website()
-        # 更新チェック用の日付を取得する
+        # 更新チェック用の日付のxpath
         infected_day_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[3]/div/iframe'   # 更新日付のiframe
         infected_day_xpath = '/html/body/main/div/div/div/div/div/h3/span'
-        infected_day = covid19_scraping(infected_day_iframe_xpath, infected_day_xpath)
-        infected_people.append(infected_day)
-
-        # 新規感染者数
+        # 新規感染者数のxpath
         new_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[4]/div[1]/iframe'   # 新規感染者のiframe
         new_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
-        new_people = covid19_scraping(new_iframe_xpath, new_xpath)
-        infected_people.append(new_people)
-
-        # 重症者数
+        # 重症者数のxpath
         severe_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[4]/div[4]/iframe'   # 重症者のiframe
         severe_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
-        severe_people = covid19_scraping(severe_iframe_xpath, severe_xpath)
-        infected_people.append(severe_people)
-
-        # 死亡者数
+        # 死亡者数のxpath
         deaths_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[4]/div[3]/iframe'   # 死亡者のiframe
         deaths_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
-        deaths = covid19_scraping(deaths_iframe_xpath, deaths_xpath)
-        infected_people.append(deaths)
 
-        # ドライバーを閉じる
+        # 各xpathを二次元配列に格納する
+        xpaths = [
+            [   # 更新チェック用の日付
+                infected_day_iframe_xpath,
+                infected_day_xpath
+            ],
+            [   # 新規感染者数
+                new_iframe_xpath,
+                new_xpath
+            ],
+            [   # 重症者数
+                severe_iframe_xpath,
+                severe_xpath
+            ],
+            [   # 死亡者数
+                deaths_iframe_xpath,
+                deaths_xpath
+            ]
+        ]
+
+
+        # 指定したURLに遷移
+        driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
+        # ページが読み込まれるまで待機
+        wait.until(EC.presence_of_all_elements_located)
+
+        # xpathを配列から取得してスクレピングし、
+        # 新規感染者数配列に結果を格納する
+        for xpath in xpaths:
+            result = covid19_scraping(xpath[0], xpath[1])
+            infected_people.append(result)
+
+        # ウィンドウを全て閉じる
         driver.quit()
 
         # スクレイピングでうまく情報が受け取ることができず
@@ -99,7 +113,6 @@ def infected_people_scraping():
         for check in infected_people:
             if check == None:
                 return None
-
         # うまく取得できたら配列を返す
         return infected_people
     
