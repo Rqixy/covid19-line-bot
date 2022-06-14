@@ -1,6 +1,6 @@
 from array import array
 import string
-import processing.scraping as scraping
+import scraping
 import psycopg2
 from datetime import datetime, timezone, timedelta
 import os
@@ -42,13 +42,13 @@ def insert_infected_data():
 
             # スクレイピングで新しく取得した日付と、最後のレコードにある日付を比較して
             # 同じなら更新されていないことを伝える
-            if result == infected_people_array[3]:
+            if result == infected_people_array[0]:
                 text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
                 return text
 
             # スクレイピングで取ってきた配列のデータを格納する
             sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day) VALUES (%s, %s, %s, %s)"
-            curs.execute(sql, (infected_people_array[0], infected_people_array[1], infected_people_array[2], infected_people_array[3]))
+            curs.execute(sql, (infected_people_array[1], infected_people_array[2], infected_people_array[3], infected_people_array[0]))
 
             # レコードが7個より大きくなったら一番古いレコードを削除する
             curs.execute("SELECT * FROM infected_people;")
@@ -95,8 +95,8 @@ def print_infected_data(day: int)-> any:
     # データベースに接続する
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
-            sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1 OFFSET " + str(day) + ";"
-            curs.execute(sql)
+            sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1 OFFSET %s;"
+            curs.execute(sql, (str(day),))
             new_data = []
             for row in curs.fetchall():
                 new_data = [row[4], "    新規感染者数：" + str(row[1]) + "人", "    重症者数(累計)：" + str(row[2]) + "人", "    死亡者数(累計)：" + str(row[3]) + "人"]
