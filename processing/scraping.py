@@ -1,6 +1,5 @@
 import re
 import string
-import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -14,7 +13,7 @@ wait = WebDriverWait(driver, 20)
 
 # 待機時間
 def sleeping():
-    time.sleep(2)
+    wait.until(EC.presence_of_all_elements_located)
 
 # 文字列のから数値型に変換する
 def remove_comma_and_text_to_int(text: string) -> int:
@@ -35,11 +34,11 @@ def covid19_scraping(iframe_xpath: string, scraping_xpath: string) -> any:
         for i in range(20):
             sleeping()
             # iframeに入る
-            iframe = driver.find_element(by=By.XPATH, value=iframe_xpath)
+            iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
             driver.switch_to.frame(iframe)
             sleeping()
             # スクレイピングする
-            result = driver.find_element(by=By.XPATH, value=scraping_xpath)
+            result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
             if result.text != '':
                 # 文字列型の数字が送られた場合数値型に変換する
                 if re.compile('^[0-9,]+$').search(result.text):
@@ -57,9 +56,6 @@ def covid19_scraping(iframe_xpath: string, scraping_xpath: string) -> any:
 # 感染者情報をスクレイピングする
 def infected_people_scraping():
     try:
-        # 配列の初期化
-        infected_people = []
-
         # 更新チェック用の日付のxpath
         infected_day_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[3]/div/iframe'   # 更新日付のiframe
         infected_day_xpath = '/html/body/main/div/div/div/div/div/h3/span'
@@ -97,7 +93,10 @@ def infected_people_scraping():
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
         # ページが読み込まれるまで待機
-        wait.until(EC.presence_of_all_elements_located)
+        sleeping()
+
+        # 配列の初期化
+        infected_people = []
 
         # xpathを配列から取得してスクレピングし、
         # 新規感染者数配列に結果を格納する
