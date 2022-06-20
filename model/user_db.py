@@ -1,6 +1,5 @@
 import model.db_config as db
 import psycopg2
-from datetime import datetime, timezone, timedelta
 
 db_url = db.DATABASE_URL
 
@@ -9,12 +8,9 @@ def insert_user_data(user_id: str):
     # データベースに接続する
     with psycopg2.connect(db_url) as conn:
         with conn.cursor() as curs:
-            #ユーザーが登録した日付の取得
-            JST = timezone(timedelta(hours=+9))
-            now = datetime.now(JST).isoformat()
             # user_idをデータベースに登録する
-            sql = "INSERT INTO users_id (user_id, created_at) VALUES (%s, %s)"
-            curs.execute(sql, (user_id, now))
+            sql = "INSERT INTO users_id (user_id) VALUES (%s)"
+            curs.execute(sql, (user_id,))
 
 # ブロックしたユーザーのidと一致するuser_idを削除する
 def delete_user_data(user_id: str):
