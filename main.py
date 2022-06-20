@@ -103,7 +103,7 @@ def handle_message(event):
         if result == None:
             result_text = "スクレピング失敗..."
         elif type(result) is list:
-            result_text = "スクレピング成功！！"
+            result_text = "スクレピング成功！！\n\n" + result[0]
         make_quick_reply(event.reply_token, result_text)
     else:
         reply_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
