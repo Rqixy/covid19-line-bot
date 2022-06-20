@@ -13,7 +13,7 @@ from linebot.models.actions import PostbackAction
 import os
 import model.infected_db as infected_db
 import model.user_db as user_db
-from scraping import scraping as sc
+from scraping_test import scraping_test as sc
 
 # クイックリプライの処理
 def make_quick_reply(token, text):
