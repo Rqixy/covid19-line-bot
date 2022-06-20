@@ -1,5 +1,6 @@
-CREATE TABLE IF NOT EXISTS users_id (
-    id SERIAL,
-    user_id TEXT NOT NULL,
-    created_at TEXT NOT NULL
+users_id (
+    id SERIAL NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    PRIMARY KEY (id)
 );
