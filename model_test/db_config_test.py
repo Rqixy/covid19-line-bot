@@ -2,7 +2,7 @@ import psycopg2
 import os
 
 # XXX 終わったら消す！！
-DATABASE_URL = "postgres://hrywcubbsumlrp:1d8e9de1654ce9c36b63256d80a2f6128d60b58f6775759074e3467ceab2ebd9@ec2-3-227-195-74.compute-1.amazonaws.com:5432/d3krgubfr1615f"
+DATABASE_URL = ""
 
 # 一番古いレコードを削除するためのid取得をして返す
 def first_data_id():
