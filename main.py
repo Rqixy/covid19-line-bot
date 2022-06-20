@@ -11,7 +11,8 @@ from linebot.models import (
 )
 from linebot.models.actions import PostbackAction
 import os
-import processing.db as db
+import model.infected_db as infected_db
+import model.user_db as user_db
 
 # クイックリプライの処理
 def make_quick_reply(token, text):
@@ -26,7 +27,7 @@ def make_quick_reply(token, text):
 
 # 1日分のコロナ感染者情報の送信の処理
 def infected_data_reply(event: any, day: int):
-    new_data_array = db.print_infected_data(day=day)
+    new_data_array = infected_db.print_infected_data(day=day)
     # もし1週間の範囲外の数値が与えられたら範囲外のメッセージを送信する
     if type(new_data_array) is str:
         make_quick_reply(event.reply_token, text=new_data_array)
@@ -70,7 +71,7 @@ def handle_follow(event):
     # ユーザーIDを取得する
     user_id = event.source.user_id
     # データベースにuser_idを格納する
-    db.insert_user_data(user_id)
+    user_db.insert_user_data(user_id)
     # quick replyを表示する
     make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n午後1時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
 
@@ -93,7 +94,7 @@ def handle_message(event):
         day = 3
         infected_data_reply(event=event, day=day)
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
-        week_data_array = db.print_week_infected_data()
+        week_data_array = infected_db.print_week_infected_data()
         line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         make_quick_reply(event.reply_token, text=line_text_week_data)
     else:
@@ -105,7 +106,7 @@ def handle_unfollow(event):
     # ユーザーIDを取得する
     user_id = event.source.user_id
     # データベースから取得したuser_idと一致するuser_idを削除する
-    db.delete_user_data(user_id)
+    user_db.delete_user_data(user_id)
 
 # ポートの設定
 if __name__ == '__main__':

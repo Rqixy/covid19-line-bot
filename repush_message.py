@@ -1,13 +1,13 @@
 # 午後6時に再送信するプログラム
 from linebot import LineBotApi
 import os
-import processing.db as db
 import sys
+import model.infected_db as infected_db
+import model.user_db as user_db
 import processing.message as message
 
-
 # データベースから最新のデータ情報を持ってくる
-new_data = db.insert_infected_data()
+new_data = infected_db.insert_infected_data()
 
 # もうすでに新しいデータが更新されていたら動作を止める
 if type(new_data) is str:
@@ -25,7 +25,7 @@ else:
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 
 # データベースから登録されているuser_idを全て取得
-users_id = db.print_user_id()
+users_id = user_db.print_user_id()
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 # 登録されているuser_idの人達に最新情報を送信する
 for user_id in users_id:
