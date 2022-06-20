@@ -1,4 +1,4 @@
-import db_config as db
+import model.db_config as db
 import psycopg2
 from datetime import datetime, timezone, timedelta
 
