@@ -1,7 +1,7 @@
 import os
 import sys
 import psycopg2
-import db_config as db
+import model.db_config as db
 sys.path.append(os.path.join(os.path.dirname(__file__), '../scraping'))
 import scraping
 
