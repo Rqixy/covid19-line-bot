@@ -11,11 +11,15 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     print("iframe bool : " + str(bool(iframe)))
+    print("iframe ↓")
+    print(result)
     driver.switch_to.frame(iframe)
 
     # スクレイピングする
     result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
     print("result bool : " + str(bool(result)))
+    print("result ↓")
+    print(result)
     result_text = result.text
 
     print("result text : " + result_text)
@@ -73,19 +77,19 @@ def infected_people_scraping():
 
         # 配列の初期化
         infected_people = []
-        print("infected_people array : " + str(infected_people))
+
         infected_day = infected_day_scraping(driver, infected_day_iframe_xpath, infected_day_xpath)
         infected_people.append(infected_day)
-        print("infected_people array : " + str(infected_people))
+        
         new_infected_people = people_scraping(driver, new_infected_iframe_xpath, new_infected_xpath)
         infected_people.append(new_infected_people)
-        print("infected_people array : " + str(infected_people))
+        
         severe_people = people_scraping(driver, severe_iframe_xpath, severe_xpath)
         infected_people.append(severe_people)
-        print("infected_people array : " + str(infected_people))
+        
         deaths = people_scraping(driver, deaths_iframe_xpath, deaths_xpath)
         infected_people.append(deaths)
-        print("infected_people array : " + str(infected_people))
+        
         # ウィンドウを全て閉じる
         driver.quit()
         
