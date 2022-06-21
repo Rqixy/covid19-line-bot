@@ -5,9 +5,7 @@ import scraping_test.scraping_config_test as sc
 
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
-    wait = WebDriverWait(driver, 10)
-    print("default page source ↓")
-    print(driver.page_source)
+    wait = WebDriverWait(driver, 30)
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     driver.switch_to.frame(iframe)
@@ -20,9 +18,6 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     print("result text : " + result_text)
     # iframeから元のフレームに戻る
     driver.switch_to.default_content()
-
-    print("prev default page source ↓")
-    print(driver.page_source)
 
     return result_text
 
@@ -67,7 +62,6 @@ def infected_people_scraping():
         deaths_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
 
         driver = sc.setting_web_driver()
-        print("driver bool : " + str(bool(driver)))
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
         # ページが読み込まれるまで待機
