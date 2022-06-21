@@ -1,8 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-# import scraping_test.scraping_config_test as sc
-import scraping_config_test as sc
+import scraping_test.scraping_config_test as sc
+# import scraping_config_test as sc
 
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
@@ -103,4 +103,4 @@ def infected_people_scraping():
         print(e)
         return None
 
-print(infected_people_scraping())
+# print(infected_people_scraping())
