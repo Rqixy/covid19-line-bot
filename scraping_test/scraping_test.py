@@ -1,8 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-import scraping_test.scraping_config_test as sc
-# import scraping_config_test as sc
+# import scraping_test.scraping_config_test as sc
+import scraping_config_test as sc
 
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
@@ -14,21 +14,22 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     # print("In the iframe page source ↓")
     # print(driver.page_source)
     i = 0
-    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
-    result_text = result.text
-    while result_text == '' and i < 10:
-        print(i)
-        # スクレイピングする
-        result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
-        result_text = result.text
-        i += 1
+    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath)).text
+    print(result)
+    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath + "[text()]")).text
+    print(result)
+    # while result == '' and i < 10:
+    #     print(i)
+    #     # スクレイピングする
+    #     result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath)).text
+    #     i += 1
     
 
-    print("result text : " + result_text)
+    print("result text : " + result)
     # iframeから元のフレームに戻る
     driver.switch_to.default_content()
 
-    return result_text
+    return result
 
 # 文字列を取得するスクレイピング
 def infected_day_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
@@ -102,4 +103,4 @@ def infected_people_scraping():
         print(e)
         return None
 
-# print(infected_people_scraping())
+print(infected_people_scraping())
