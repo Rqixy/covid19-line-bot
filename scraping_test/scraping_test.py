@@ -1,8 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
-import scraping_test.scraping_config_test as sc
-# import scraping_config_test as sc
+# import scraping_test.scraping_config_test as sc
+import scraping_config_test as sc
 
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
@@ -12,9 +12,8 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     driver.switch_to.frame(iframe)
     i = 0
-    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath + "[text()]")).text
-    print(result)
-    while result == '' and i < 10:
+    result = ''
+    while result == '' and i < 100:
         print(i)
         # スクレイピングする
         result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath)).text
@@ -100,4 +99,4 @@ def infected_people_scraping():
         print(e)
         return None
 
-# print(infected_people_scraping())
+print(infected_people_scraping())
