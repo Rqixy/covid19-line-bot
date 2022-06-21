@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 import scraping_test.scraping_config_test as sc
+# import scraping_config_test as sc
 
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
@@ -12,9 +13,14 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     driver.switch_to.frame(iframe)
     print("In the iframe page source ↓")
     print(driver.page_source)
-    # スクレイピングする
-    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
-    result_text = result.text
+    result_text = ''
+    i = 0
+    while result_text == '' or i < 10:
+        # スクレイピングする
+        result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
+        result_text = result.text
+        i += 1
+    
 
     print("result text : " + result_text)
     # iframeから元のフレームに戻る
