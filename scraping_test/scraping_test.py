@@ -10,10 +10,12 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     print("scrpaing_xpath : " + scraping_xpath)
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
+    print("iframe bool : " + str(bool(iframe)))
     driver.switch_to.frame(iframe)
 
     # スクレイピングする
     result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
+    print("result bool : " + str(bool(result)))
     result_text = result.text
 
     print("result text : " + result_text)
