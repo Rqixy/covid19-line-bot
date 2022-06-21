@@ -27,6 +27,7 @@ def infected_day_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: 
     try:
         text = scraping(driver, iframe_xpath, scraping_xpath)
         text += "0:00現在"
+        print("infected_day_scraping : " + text)
         return text
     except Exception as e:
         print("str_scraping error : " + e)
@@ -38,7 +39,7 @@ def people_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -
         num = scraping(driver, iframe_xpath, scraping_xpath)
         num = sc.remove_comma(num)
         num = sc.str_to_int(num)
-
+        print("people_scraping : " + num)
         return num
     except Exception as e:
         print("num_scraping error : " + e)
@@ -62,6 +63,7 @@ def infected_people_scraping():
         deaths_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
 
         driver = sc.setting_web_driver()
+        print("driver bool : " + str(bool(driver)))
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
         # ページが読み込まれるまで待機
@@ -69,19 +71,19 @@ def infected_people_scraping():
 
         # 配列の初期化
         infected_people = []
-
+        print("infected_people array : " + str(infected_people))
         infected_day = infected_day_scraping(driver, infected_day_iframe_xpath, infected_day_xpath)
         infected_people.append(infected_day)
-
+        print("infected_people array : " + str(infected_people))
         new_infected_people = people_scraping(driver, new_infected_iframe_xpath, new_infected_xpath)
         infected_people.append(new_infected_people)
-
+        print("infected_people array : " + str(infected_people))
         severe_people = people_scraping(driver, severe_iframe_xpath, severe_xpath)
         infected_people.append(severe_people)
-
+        print("infected_people array : " + str(infected_people))
         deaths = people_scraping(driver, deaths_iframe_xpath, deaths_xpath)
         infected_people.append(deaths)
-
+        print("infected_people array : " + str(infected_people))
         # ウィンドウを全て閉じる
         driver.quit()
         
