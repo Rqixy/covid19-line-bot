@@ -41,7 +41,7 @@ def people_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -
         num = scraping(driver, iframe_xpath, scraping_xpath)
         num = sc.remove_comma(num)
         num = sc.str_to_int(num)
-        print("people_scraping : " + num)
+        print("people_scraping : " + str(num))
         return num
     except Exception as e:
         print("num_scraping error : " + e)
