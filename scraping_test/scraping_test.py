@@ -11,18 +11,15 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     driver.switch_to.frame(iframe)
-    # print("In the iframe page source ↓")
-    # print(driver.page_source)
     i = 0
-    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath)).text
-    print(result)
     result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath + "[text()]")).text
     print(result)
-    # while result == '' and i < 10:
-    #     print(i)
-    #     # スクレイピングする
-    #     result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath)).text
-    #     i += 1
+    while result == '' and i < 10:
+        print(i)
+        # スクレイピングする
+        result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath)).text
+        print(result)
+        i += 1
     
 
     print("result text : " + result)
