@@ -12,7 +12,7 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     print("iframe bool : " + str(bool(iframe)))
     print("iframe ↓")
-    print(result)
+    print(iframe)
     driver.switch_to.frame(iframe)
 
     # スクレイピングする
