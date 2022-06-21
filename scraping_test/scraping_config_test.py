@@ -7,6 +7,7 @@ def setting_web_driver() -> webdriver:
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     driver = webdriver.Chrome(options=options)
+    print(bool(driver))
     return driver
 
 # 待機時間
