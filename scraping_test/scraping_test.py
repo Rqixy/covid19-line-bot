@@ -6,6 +6,7 @@ import scraping_test.scraping_config_test as sc
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     wait = WebDriverWait(driver, 30)
+    print("iframe xpath : " + iframe_xpath)
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     driver.switch_to.frame(iframe)
