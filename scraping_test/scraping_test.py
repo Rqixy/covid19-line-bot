@@ -6,25 +6,23 @@ import scraping_test.scraping_config_test as sc
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     wait = WebDriverWait(driver, 10)
-    print("iframe_xpath : " + iframe_xpath)
-    print("scrpaing_xpath : " + scraping_xpath)
+    print("default page source ↓")
+    print(driver.page_source)
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
-    print("iframe bool : " + str(bool(iframe)))
-    print("iframe ↓")
-    print(iframe)
     driver.switch_to.frame(iframe)
-
+    print("In the iframe page source ↓")
+    print(driver.page_source)
     # スクレイピングする
     result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
-    print("result bool : " + str(bool(result)))
-    print("result ↓")
-    print(result)
     result_text = result.text
 
     print("result text : " + result_text)
     # iframeから元のフレームに戻る
     driver.switch_to.default_content()
+
+    print("prev default page source ↓")
+    print(driver.page_source)
 
     return result_text
 
