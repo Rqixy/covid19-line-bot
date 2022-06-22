@@ -12,8 +12,7 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     print("iframe xpath : " + iframe_xpath)
     print("scraping xpath : " + scraping_xpath)
     result_text = ''
-    i = 0
-    while result_text == '' and i < 10:
+    for i in range(10):
         time.sleep(5)
         # iframeに入る
         iframe = driver.find_element(By.XPATH, iframe_xpath)
@@ -24,10 +23,12 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
         result_text = result.text
         print("result text : " + result_text)
         print("i = " + str(i))
-        i += 1
         # iframeから元のフレームに戻る
         driver.switch_to.default_content()
 
+        if result_text != '':
+            break
+        driver.refresh()
 
     return result_text
 
