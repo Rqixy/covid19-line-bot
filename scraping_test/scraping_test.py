@@ -9,19 +9,21 @@ import scraping_test.scraping_config_test as sc
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     wait = WebDriverWait(driver, 30)
     print("iframe xpath : " + iframe_xpath)
+    print("scraping xpath : " + scraping_xpath)
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     driver.switch_to.frame(iframe)
-    driver.implicitly_wait(10)
     result_text = ''
     i = 0
     while result_text == '' and i < 10:
         time.sleep(5)
+        print(driver.page_source)
         result = driver.find_element(By.XPATH, scraping_xpath)
         result_text = result.text
+        print("result text : " + result_text)
+        print("i = " + str(i))
         i += 1
 
-    print("result text : " + result_text)
     # iframeから元のフレームに戻る
     driver.switch_to.default_content()
 
