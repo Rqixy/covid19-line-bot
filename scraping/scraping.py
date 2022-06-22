@@ -1,22 +1,35 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import scraping.scraping_config as sc
 
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
-    wait = WebDriverWait(driver, 10)
+    # 戻り値の初期化
+    result_text = ''
+    # スクレイピングで値を取得できるまで繰り返す
+    for i in range(50):
+        time.sleep(5)   # 待機時間
 
-    # iframeに入る
-    iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
-    driver.switch_to.frame(iframe)
+        # iframeに入る
+        iframe = driver.find_element(By.XPATH, iframe_xpath)
+        driver.switch_to.frame(iframe)
+        time.sleep(5)   # 待機時間
 
-    # スクレイピングする
-    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
-    result_text = result.text
+        # スクレピングする
+        result = driver.find_element(By.XPATH, scraping_xpath)
+        result_text = result.text
 
-    # iframeから元のフレームに戻る
-    driver.switch_to.default_content()
+        # iframeから元のフレームに戻る
+        driver.switch_to.default_content()
+
+        # スクレピングで値が取れていたら抜ける
+        if result_text != '':
+            break
+        # 失敗していたらブラウザをリロードする
+        driver.refresh()
 
     return result_text
 
@@ -25,6 +38,7 @@ def infected_day_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: 
     try:
         text = scraping(driver, iframe_xpath, scraping_xpath)
         text += "0:00現在"
+        print("infected_day_scraping : " + text)
         return text
     except Exception as e:
         print("str_scraping error : " + e)
@@ -36,11 +50,12 @@ def people_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -
         num = scraping(driver, iframe_xpath, scraping_xpath)
         num = sc.remove_comma(num)
         num = sc.str_to_int(num)
-
+        print("people_scraping : " + str(num))
         return num
     except Exception as e:
         print("num_scraping error : " + e)
         return None
+
 
 
 # 感染者情報をスクレイピングする
@@ -63,23 +78,24 @@ def infected_people_scraping():
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
         # ページが読み込まれるまで待機
-        sc.waiting_open_website()
+        wait = WebDriverWait(driver, 10)
+        wait.until(EC.presence_of_all_elements_located)
 
         # 配列の初期化
         infected_people = []
 
         infected_day = infected_day_scraping(driver, infected_day_iframe_xpath, infected_day_xpath)
         infected_people.append(infected_day)
-
+        
         new_infected_people = people_scraping(driver, new_infected_iframe_xpath, new_infected_xpath)
         infected_people.append(new_infected_people)
-
+        
         severe_people = people_scraping(driver, severe_iframe_xpath, severe_xpath)
         infected_people.append(severe_people)
-
+        
         deaths = people_scraping(driver, deaths_iframe_xpath, deaths_xpath)
         infected_people.append(deaths)
-
+        
         # ウィンドウを全て閉じる
         driver.quit()
         

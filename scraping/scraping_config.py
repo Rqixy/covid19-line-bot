@@ -1,19 +1,12 @@
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 # WebDriverの設定
 def setting_web_driver() -> webdriver:
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     driver = webdriver.Chrome(options=options)
-    return driver
 
-# 待機時間
-def waiting_open_website():
-    driver = setting_web_driver()
-    wait = WebDriverWait(driver, 10)
-    wait.until(EC.presence_of_all_elements_located)
+    return driver
 
 # 文字列に含まれるカンマを取り除く
 def remove_comma(text: str) -> str:
