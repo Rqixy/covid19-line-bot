@@ -3,20 +3,21 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-import scraping_test.scraping_config_test as sc
-# import scraping_config_test as sc
+# import scraping_test.scraping_config_test as sc
+import scraping_config_test as sc
 
 # スクレピング部分
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
-    wait = WebDriverWait(driver, 30)
+    # wait = WebDriverWait(driver, 30)
     print("iframe xpath : " + iframe_xpath)
     print("scraping xpath : " + scraping_xpath)
-    # iframeに入る
-    iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
-    driver.switch_to.frame(iframe)
     result_text = ''
     i = 0
     while result_text == '' and i < 10:
+        time.sleep(5)
+        # iframeに入る
+        iframe = driver.find_element(By.XPATH, iframe_xpath)
+        driver.switch_to.frame(iframe)
         time.sleep(5)
         print(driver.page_source)
         result = driver.find_element(By.XPATH, scraping_xpath)
@@ -24,9 +25,9 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
         print("result text : " + result_text)
         print("i = " + str(i))
         i += 1
+        # iframeから元のフレームに戻る
+        driver.switch_to.default_content()
 
-    # iframeから元のフレームに戻る
-    driver.switch_to.default_content()
 
     return result_text
 
@@ -103,4 +104,4 @@ def infected_people_scraping():
         print(e)
         return None
 
-# print(infected_people_scraping())
+print(infected_people_scraping())
