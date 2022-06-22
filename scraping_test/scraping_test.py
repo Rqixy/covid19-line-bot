@@ -1,3 +1,4 @@
+import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -8,13 +9,17 @@ import scraping_test.scraping_config_test as sc
 def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
     wait = WebDriverWait(driver, 30)
     print("iframe xpath : " + iframe_xpath)
-    driver.set_script_timeout(10)
     # iframeに入る
     iframe = wait.until(lambda x: x.find_element(By.XPATH, iframe_xpath))
     driver.switch_to.frame(iframe)
-    driver.set_script_timeout(10)
-    result = wait.until(lambda x: x.find_element(By.XPATH, scraping_xpath))
-    result_text = result.text
+    driver.implicitly_wait(10)
+    result_text = ''
+    i = 0
+    while result_text == '' and i < 10:
+        time.sleep(5)
+        result = driver.find_element(By.XPATH, scraping_xpath)
+        result_text = result.text
+        i += 1
 
     print("result text : " + result_text)
     # iframeから元のフレームに戻る
