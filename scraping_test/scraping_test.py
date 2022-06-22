@@ -1,6 +1,7 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import scraping_test.scraping_config_test as sc
 # import scraping_config_test as sc
@@ -73,7 +74,8 @@ def infected_people_scraping():
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
         # ページが読み込まれるまで待機
-        sc.waiting_open_website()
+        wait = WebDriverWait(driver, 10)
+        wait.until(EC.presence_of_all_elements_located)
 
         # 配列の初期化
         infected_people = []
