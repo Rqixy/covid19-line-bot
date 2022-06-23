@@ -3,7 +3,7 @@ import sys
 import psycopg2
 import model.db_config as db
 sys.path.append(os.path.join(os.path.dirname(__file__), '../scraping'))
-import scraping
+import scraping.scraping as scraping
 
 db_url = db.DATABASE_URL
 
