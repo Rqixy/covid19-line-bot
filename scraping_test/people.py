@@ -6,11 +6,11 @@ import scraping_test.unit.str_to_int as STI
 # 感染、重症、死亡の人数を取得するスクレピング
 def people_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> int:
     try:
-        num = SC.scraping(driver, iframe_xpath, scraping_xpath)
-        num = RC.remove_comma(num)
-        num = STI.str_to_int(num)
-        print("people_scraping : " + str(num))
-        return num
+        str_people = SC.scraping(driver, iframe_xpath, scraping_xpath)
+        removed_comma_people = RC.remove_comma(str_people)
+        people = STI.str_to_int(removed_comma_people)
+        
+        return people
     except Exception as e:
         print("num_scraping error : " + e)
         return None
