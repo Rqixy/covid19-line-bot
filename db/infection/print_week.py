@@ -6,7 +6,7 @@ def print_infected_week() -> list:
     # データベースに接続する
     with psycopg2.connect(config.DATABASE_URL) as conn:
         with conn.cursor() as curs:
-            sql = "SELECT * FROM test_table ORDER BY id;"
+            sql = "SELECT * FROM infected_people ORDER BY id;"
             curs.execute(sql)
             week_infected_info_array = []
             for infected_info in curs.fetchall():

@@ -11,7 +11,7 @@ def print_infected_day(day: int) -> (list | str):
     # データベースに接続する
     with psycopg2.connect(config.DATABASE_URL) as conn:
         with conn.cursor() as curs:
-            sql = "SELECT * FROM test_table ORDER BY id DESC LIMIT 1 OFFSET %s;"
+            sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1 OFFSET %s;"
             curs.execute(sql, (str(day),))
 
             infected_info_array = []
