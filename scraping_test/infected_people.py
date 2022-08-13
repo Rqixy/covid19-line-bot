@@ -1,29 +1,38 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import scraping_test.config as config
-import scraping_test.people as people
+import scraping_test.people as PP
 import scraping_test.infected_day as IDAY
 import scraping_test.check.array_check as AC
 
 # 感染者情報をスクレイピングする
 def infected_people_scraping():
     try:
-        # 更新チェック用の日付のxpath
-        infected_day_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[3]/div/iframe'   # 更新日付のiframe
-        infected_day_xpath = '/html/body/main/div/div/div/div/div/h3/span'
+        # 取得したい情報の要素までのxpathを連想配列に格納する
+        # 取得したい情報がiframeを使用して表示されているのでirame内に入るためのxpathも用意しておく
 
+        # 感染日のxpath
+        infected_day_xpaths = {
+            'iframe': '/html/body/div[1]/main/div[2]/div/div/div[3]/div/iframe',
+            'xpath': '/html/body/main/div/div/div/div/div/h3/span'
+        }
         # 新規感染者数のxpath
-        new_infected_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[4]/div[1]/iframe'   # 新規感染者のiframe
-        new_infected_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
-
+        new_infected_xpaths = {
+            'iframe': '/html/body/div[1]/main/div[2]/div/div/div[4]/div[1]/iframe',
+            'xpath': '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
+        }
         # 重症者数のxpath
-        severe_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[4]/div[4]/iframe'   # 重症者のiframe
-        severe_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
-
+        severe_xpaths = {
+            'iframe': '/html/body/div[1]/main/div[2]/div/div/div[4]/div[4]/iframe',
+            'xpath': '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
+        }
         # 死亡者数のxpath
-        deaths_iframe_xpath = '/html/body/div[1]/main/div[2]/div/div/div[4]/div[3]/iframe'   # 死亡者のiframe
-        deaths_xpath = '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
+        deaths_xpaths = {
+            'iframe': '/html/body/div[1]/main/div[2]/div/div/div[4]/div[3]/iframe',
+            'xpath': '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
+        }
 
+        # WebDriverの設定
         driver = config.setting_web_driver()
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
@@ -33,16 +42,16 @@ def infected_people_scraping():
 
         infected_people_array = []
 
-        infected_day = IDAY.infected_day_scraping(driver, infected_day_iframe_xpath, infected_day_xpath)
+        infected_day = IDAY.infected_day_scraping(driver, infected_day_xpaths)
         infected_people_array.append(infected_day)
         
-        new_infected_people = people.people_scraping(driver, new_infected_iframe_xpath, new_infected_xpath)
+        new_infected_people = PP.people_scraping(driver, new_infected_xpaths)
         infected_people_array.append(new_infected_people)
         
-        severe_people = people.people_scraping(driver, severe_iframe_xpath, severe_xpath)
+        severe_people = PP.people_scraping(driver, severe_xpaths)
         infected_people_array.append(severe_people)
         
-        deaths = people.people_scraping(driver, deaths_iframe_xpath, deaths_xpath)
+        deaths = PP.people_scraping(driver, deaths_xpaths)
         infected_people_array.append(deaths)
         
         # ウィンドウを全て閉じる
