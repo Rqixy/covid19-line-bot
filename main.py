@@ -15,6 +15,10 @@ import model.infected_db as infected_db
 import model.user_db as user_db
 import scraping.infected_people as IP
 
+import db_test.infection.print_day as PD
+import db_test.infection.print_week as PW
+
+
 # クイックリプライの処理
 def make_quick_reply(token, text):
     items = []
@@ -28,7 +32,8 @@ def make_quick_reply(token, text):
 
 # 1日分のコロナ感染者情報の送信の処理
 def infected_data_reply(event: any, day: int):
-    new_data_array = infected_db.print_infected_data(day=day)
+    # new_data_array = infected_db.print_infected_data(day=day)
+    new_data_array = PD.print_infected_day(day=day)
     # もし1週間の範囲外の数値が与えられたら範囲外のメッセージを送信する
     if type(new_data_array) is str:
         make_quick_reply(event.reply_token, text=new_data_array)
@@ -95,7 +100,8 @@ def handle_message(event):
         day = 3
         infected_data_reply(event=event, day=day)
     elif text == '1週間' or text == '１週間' or text == '一週間' or text == 'week':
-        week_data_array = infected_db.print_week_infected_data()
+        # week_data_array = infected_db.print_week_infected_data()
+        week_data_array = PW.print_week_infected_data()
         line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         make_quick_reply(event.reply_token, text=line_text_week_data)
     elif text == 'testaaa': # スクレピング検証用
