@@ -1,9 +1,9 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import config
-import people
-import infected_day as IDAY
-import check.array_check as AC
+import scraping_test.config as config
+import scraping_test.people as people
+import scraping_test.infected_day as IDAY
+import scraping_test.check.array_check as AC
 
 # 感染者情報をスクレイピングする
 def infected_people_scraping():

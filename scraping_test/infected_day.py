@@ -1,5 +1,5 @@
 from selenium import webdriver
-import scraping as SC
+import scraping_test.scraping as SC
 
 # 感染日時を取得するスクレイピング
 def infected_day_scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
