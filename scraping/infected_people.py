@@ -6,7 +6,7 @@ import scraping.infected_day as IDAY
 import scraping.check.get_info as GI
 
 # 感染者情報をスクレイピングする
-def infected_people_scraping():
+def infected_people_scraping() -> (list | None):
     try:
         # 取得したい情報の要素までのxpathを連想配列に格納する
         # 取得したい情報がiframeを使用して表示されているのでirame内に入るためのxpathも用意しておく
