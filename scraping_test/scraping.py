@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 import time
 
 # スクレピング実行部分
-def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
+def scraping(driver: webdriver, xpaths: dict) -> str:
     scraped_text = ''
 
     # 取得したい要素が非同期で表示されるため、取得できないことがある。
@@ -12,11 +12,11 @@ def scraping(driver: webdriver, iframe_xpath: str, scraping_xpath: str) -> str:
         time.sleep(2)   # 明示的にページの読み込みを待機する
 
         # iframeに入る
-        iframe_element = driver.find_element(By.XPATH, iframe_xpath)
+        iframe_element = driver.find_element(By.XPATH, xpaths['iframe'])
         driver.switch_to.frame(iframe_element)
         time.sleep(2)   # 明示的にページの読み込みを待機する
 
-        element = driver.find_element(By.XPATH, scraping_xpath)
+        element = driver.find_element(By.XPATH, xpaths['xpath'])
         scraped_text = element.text
 
         # iframeから元のフレームに戻る
