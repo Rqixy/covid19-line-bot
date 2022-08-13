@@ -1,7 +1,3 @@
-import os
-import sys
-# sys.path.append('../../db_test')
-# import config
 import db_test.config as config
 import psycopg2
 
@@ -22,5 +18,3 @@ def print_infected_day(day: int):
             for infected_data in curs.fetchall():
                 new_data = [infected_data[4], "    新規感染者数：" + str(infected_data[1]) + "人", "    重症者数(累計)：" + str(infected_data[2]) + "人", "    死亡者数(累計)：" + str(infected_data[3]) + "人"]
             return new_data
-
-print(sys.path)
