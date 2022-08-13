@@ -3,14 +3,14 @@ import sys
 import psycopg2
 import model.db_config as db
 sys.path.append(os.path.join(os.path.dirname(__file__), '../scraping'))
-import scraping.scraping as scraping
+import scraping.infected_people as IP
 
 db_url = db.DATABASE_URL
 
 # 感染者データの追加
 def insert_infected_data():
     # スクレイピングを行い、配列で取得する
-    infected_people_array = scraping.infected_people_scraping()
+    infected_people_array = IP.infected_people_scraping()
 
     # スクレイピングで情報が取得できていなかったら情報を取得できなかったことを送信する
     if infected_people_array == None:
