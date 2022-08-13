@@ -2,8 +2,8 @@
 from linebot import LineBotApi
 import os
 import sys
-import model.infected_db as infected_db
-import model.user_db as user_db
+import db.infected_db as infected_db
+import db.user_db as user_db
 import processing.message as message
 
 # データベースから最新のデータ情報を持ってくる
