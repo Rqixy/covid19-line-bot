@@ -2,12 +2,12 @@
 from linebot import LineBotApi
 import os
 import sys
-import db.infected_db as infected_db
-import db.user_db as user_db
+import db.infection.insert as I
+import db.user.print as U
 import processing.message as message
 
 # データベースから最新のデータ情報を持ってくる
-new_data = infected_db.insert_infected_data()
+new_data = I.insert_infected_data()
 
 # もし新しいデータが更新されていなかったらdbのinsert_infected_peopleのtext結果を代入する
 if type(new_data) is str:
@@ -27,7 +27,7 @@ else:
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
 
 # データベースから登録されているuser_idを全て取得
-users_id = user_db.print_user_id()
+users_id = U.print_user_id()
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 # 登録されているuser_idの人達に最新情報を送信する
 for user_id in users_id:
