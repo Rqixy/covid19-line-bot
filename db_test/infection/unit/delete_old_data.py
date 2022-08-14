@@ -1,4 +1,4 @@
-import first_data as FD
+import db_test.infection.unit.first_data as FD
 
 # レコードが7個より大きくなったら一番古いレコードを削除する
 def delete_old_data(curs: _Cursor):
