@@ -1,7 +1,7 @@
 import db_test.infection.unit.first_data as FD
 
 # レコードが7個より大きくなったら一番古いレコードを削除する
-def delete_old_data(curs: _Cursor):
+def delete_old_data(curs):
     curs.execute("SELECT * FROM test_table;")
     records = curs.fetchall()
     counts = len(records)
