@@ -28,7 +28,7 @@ def insert_infected_data() -> (list | str):
     with psycopg2.connect(config.DATABASE_URL) as conn:
         with conn.cursor() as curs:
             # もし新しいデータが入ってこなかったら新しいデータが無いことを送信する
-            if not NID.new_infected_data(curs, infected_info):
+            if not NID.new_infected_day(curs, infected_day):
                 text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
                 return text
 
