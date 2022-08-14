@@ -16,7 +16,7 @@ import db.user.insert as UI
 import db.user.delete as UD
 import db.infection.print_day as PD
 import db.infection.print_week as PW
-import scraping.infected_people as IP
+import db_test.infection.insert as IS
 
 
 # クイックリプライの処理
@@ -103,12 +103,9 @@ def handle_message(event):
         line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         make_quick_reply(event.reply_token, text=line_text_week_data)
     elif text == 'testaaa': # スクレピング検証用
-        result = IP.infected_people_scraping()
+        result = IS.insert_infected_data()
         print(result)
-        if result == None:
-            result_text = "スクレピング失敗..."
-        elif type(result) is list:
-            result_text = "スクレピング成功！！"
+        result_text = "insert分実行中、logを確認してください"
         make_quick_reply(event.reply_token, result_text)
     else:
         reply_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
