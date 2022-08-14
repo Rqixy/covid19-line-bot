@@ -1,11 +1,8 @@
-import os
-import sys
 import psycopg2
 import db_test.config as config
 import db_test.infection.print_day as PD
 import db_test.infection.unit.delete_old_data as DOD
 import db_test.infection.check.new_infected_data as NID
-# sys.path.append(os.path.join(os.path.dirname(__file__), '../scraping_test'))
 import scraping.infected_people as SC
 
 # 感染者データの追加
