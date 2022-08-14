@@ -16,7 +16,7 @@ import db.user.insert as UI
 import db.user.delete as UD
 import db.infection.print_day as PD
 import db.infection.print_week as PW
-import db_test.infection.insert as IS
+import db.infection.insert as IS
 
 
 # クイックリプライの処理
