@@ -1,4 +1,4 @@
-import db_test.config as config
+import db.config as config
 import psycopg2
 
 # user_idを配列で取得して返す

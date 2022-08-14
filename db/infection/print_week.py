@@ -1,4 +1,4 @@
-import db_test.config as config
+import db.config as config
 import psycopg2
 
 # 1週間分の感染情報を取得して返す

@@ -1,4 +1,4 @@
-import db_test.config as config
+import db.config as config
 import psycopg2
 
 # ブロックしたユーザーのidと一致するuser_idを削除する
