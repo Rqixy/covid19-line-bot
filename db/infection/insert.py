@@ -18,7 +18,7 @@ def insert_infected_info() -> (list | str):
 
     # 情報が取得されていたら、変数に格納する
     infected_day = infected_info[0]
-    new_people = infected_info[1]
+    new_infected_people = infected_info[1]
     severe_people = infected_info[2]
     deaths = infected_info[3]
 
@@ -31,8 +31,8 @@ def insert_infected_info() -> (list | str):
                 return error_text
 
             # スクレイピングで取ってきた配列のデータを格納する
-            sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day) VALUES (%s, %s, %s, %s)"
-            curs.execute(sql, (new_people, severe_people, deaths, infected_day))
+            sql = "INSERT INTO infected_info (infected_day, new_infected_people, severe_people, deaths) VALUES (%s, %s, %s, %s)"
+            curs.execute(sql, (infected_day, new_infected_people, severe_people, deaths))
 
             # レコードが7個より大きくなったら一番古いレコードを削除する
             delete_oldest_info(curs)
