@@ -5,7 +5,8 @@ import sys
 
 # データベースから最新のデータ情報を持ってくる
 new_data = insert_infected_data()
-
+print(new_data)
+print(type(new_data))
 # もし新しいデータが更新されていなかったらdbのinsert_infected_peopleのtext結果を代入する
 if type(new_data) is str:
     # Lineに送る送信メッセージの作成
