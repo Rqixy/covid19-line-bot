@@ -1,14 +1,18 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
+
 
 # スクレピング実行部分
 def scraping(driver: webdriver, xpaths: dict) -> str:
     scraped_text = ''
 
-    # 取得したい要素が非同期で表示されるため、取得できないことがある。
-    # そのため、取得できなかった時はページを更新し再度取得できるか試す。(ただし、無限ループを避けるため、10回までの制限をかけておく)
-    for i in range(10):
+    """
+    取得したい要素が非同期で表示されるため、取得できないことがある。
+    そのため、取得できなかった時はページを更新し再度取得できるか試す。(ただし、無限ループを避けるため、10回までの制限をかけておく)
+    """
+    for _ in range(10):
         time.sleep(2)   # 明示的にページの読み込みを待機する
 
         # iframeに入る
