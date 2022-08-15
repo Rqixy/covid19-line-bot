@@ -35,7 +35,7 @@ def quick_reply_for_reply(text, token):
         quick_reply_button.append(QuickReplyButton(action=PostbackAction(label='3日前', data='3日前', text='3日前')))
         quick_reply_button.append(QuickReplyButton(action=PostbackAction(label='1週間', data='1週間', text='1週間')))
         messages = TextSendMessage(text, QuickReply(quick_reply_button))
-        return line_bot_api.reply_message(token, messages)
+        return line_bot_api.push_message(token, messages)
     except Exception as e:
         print("メッセージエラー発生！ : " + str(type(e)) + " : " + e.args + " : " + e.message)
 
