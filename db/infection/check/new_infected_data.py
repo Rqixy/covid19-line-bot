@@ -2,7 +2,7 @@ from db.infection.unit.japanese_to_western_calendar import japanese_calendar_con
 
 # 新しく取得した日付と、最新のレコードにある日付を比較して
 # 最新の日付が取得できているかチェックする
-def new_infected_day(curs, new_infected_day: str) -> bool:
+def check_new_infected_day(curs, new_infected_day: str) -> bool:
     sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1;"  # DB内での最新のデータ
     curs.execute(sql)
     latest_infected_info_in_db = curs.fetchall()
