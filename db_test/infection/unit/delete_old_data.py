@@ -1,4 +1,4 @@
-import db_test.infection.unit.first_data as FD
+from db_test.infection.unit.first_data import first_data_id
 
 # レコードが7個より大きくなったら一番古いレコードを削除する
 def delete_old_data(curs):
@@ -6,4 +6,4 @@ def delete_old_data(curs):
     records = curs.fetchall()
     counts = len(records)
     if counts > 7:
-        curs.execute("DELETE FROM test_table WHERE id = %s" , (FD.first_data_id(curs),))
+        curs.execute("DELETE FROM test_table WHERE id = %s" , (first_data_id(curs),))
