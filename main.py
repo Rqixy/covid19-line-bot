@@ -1,17 +1,16 @@
-from flask import Flask, request, abort
-from linebot import WebhookHandler
-from linebot.exceptions import (
-    InvalidSignatureError
-)
-from linebot.models import (
-    FollowEvent, UnfollowEvent, MessageEvent, TextMessage,
-)
-from db.user.insert import insert_user_id
-from db.user.delete import delete_user_id
-from db.infection.print_week import print_infected_week
-from messages.quick_reply import quick_reply_for_reply
-from messages.infected_info_reply import infected_info_reply
 import os
+
+from flask import Flask, abort, request
+from linebot import WebhookHandler
+from linebot.exceptions import InvalidSignatureError
+from linebot.models import (FollowEvent, MessageEvent, TextMessage,
+                            UnfollowEvent)
+
+from db.infection.print_week import oneweek_infected_info
+from db.userid.delete import delete_user_id
+from db.userid.insert import insert_user_id
+from messages.infected_info_reply import oneday_infected_info_reply
+from messages.quick_reply import quick_reply_for_reply
 
 app = Flask(__name__)
 
@@ -68,18 +67,18 @@ def handle_message(event):
 
     if event_text == '最新' or event_text == '最新情報':
         day = 0
-        infected_info_reply(event, day)
+        oneday_infected_info_reply(event, day)
     elif event_text == '昨日' or event_text == '1日前' or event_text == '一日前':
         day = 1
-        infected_info_reply(event, day)
+        oneday_infected_info_reply(event, day)
     elif event_text == '一昨日' or event_text == '2日前' or event_text == '二日前':
         day = 2
-        infected_info_reply(event, day)
+        oneday_infected_info_reply(event, day)
     elif event_text == '3日前' or event_text == '三日前':
         day = 3
-        infected_info_reply(event, day)
+        oneday_infected_info_reply(event, day)
     elif event_text == '1週間' or event_text == '１週間' or event_text == '一週間':
-        week_data_array = print_infected_week()
+        week_data_array = oneweek_infected_info()
         line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         quick_reply_for_reply(event.reply_token, text=line_text_week_data)
     else:
