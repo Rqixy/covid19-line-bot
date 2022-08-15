@@ -10,14 +10,13 @@ from linebot.models import (
     TextSendMessage, QuickReply, QuickReplyButton
 )
 from linebot.models.actions import PostbackAction
-import os
 
-import db.user.insert as UI
-import db.user.delete as UD
-# import db.infection.print_day as PD
-# import db.infection.print_week as PW
+from db.user.insert import insert_user_id
+from db.user.delete import delete_user_id
 from db.infection.print_day import print_infected_day
 from db.infection.print_week import print_infected_week
+
+import os
 
 # クイックリプライの処理
 def make_quick_reply(token, text):
@@ -76,7 +75,7 @@ def handle_follow(event):
     # ユーザーIDを取得する
     user_id = event.source.user_id
     # データベースにuser_idを格納する
-    UI.insert_user_id(user_id)
+    insert_user_id(user_id)
     # quick replyを表示する
     make_quick_reply(event.reply_token, text="友だち追加ありがとうございます\n\n午後1時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
 
@@ -112,7 +111,7 @@ def handle_unfollow(event):
     # ユーザーIDを取得する
     user_id = event.source.user_id
     # データベースから取得したuser_idと一致するuser_idを削除する
-    UD.delete_user_id(user_id)
+    delete_user_id(user_id)
 
 # ポートの設定
 if __name__ == '__main__':
