@@ -17,6 +17,6 @@ def oneday_infected_info(num: int) -> (list | str):
 
             infected_info_array = []
             for infected_info in curs.fetchall():
-                infected_info_array = [infected_info[4], "    新規感染者数：" + str(infected_info[1]) + "人", "    重症者数(累計)：" + str(infected_info[2]) + "人", "    死亡者数(累計)：" + str(infected_info[3]) + "人"]
+                infected_info_array = [infected_info[1], "    新規感染者数：" + str(infected_info[2]) + "人", "    重症者数(累計)：" + str(infected_info[3]) + "人", "    死亡者数(累計)：" + str(infected_info[4]) + "人"]
 
             return infected_info_array
