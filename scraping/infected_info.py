@@ -16,12 +16,12 @@ infected_day_xpaths = {
     'xpath': '/html/body/main/div/div/div/div/div/h3/span'
 }
 # 新規感染者数のxpath
-new_infected_xpaths = {
+new_infected_people_xpaths = {
     'iframe': '/html/body/div[1]/main/div[2]/div/div/div[4]/div[1]/iframe',
     'xpath': '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
 }
 # 重症者数のxpath
-severe_xpaths = {
+severe_people_xpaths = {
     'iframe': '/html/body/div[1]/main/div[2]/div/div/div[4]/div[4]/iframe',
     'xpath': '/html/body/main/div/div/div[3]/div[1]/p[2]/span[1]'
 }
@@ -43,19 +43,19 @@ def infected_info_scraping() -> (list | None):
         wait = WebDriverWait(driver, 10)
         wait.until(EC.presence_of_all_elements_located)
 
-        infected_info = []
-
+        # スクレピングしてそれぞれの感染情報を取得する
         infected_day = infected_day_scraping(driver, infected_day_xpaths)
-        infected_info.append(infected_day)
-        
-        new_infected_people = people_scraping(driver, new_infected_xpaths)
-        infected_info.append(new_infected_people)
-        
-        severe_people = people_scraping(driver, severe_xpaths)
-        infected_info.append(severe_people)
-        
+        new_infected_people = people_scraping(driver, new_infected_people_xpaths)
+        severe_people = people_scraping(driver, severe_people_xpaths)
         deaths = people_scraping(driver, deaths_xpaths)
-        infected_info.append(deaths)
+
+        # 取得した情報を配列に格納する
+        infected_info = [
+            infected_day,
+            new_infected_people,
+            severe_people,
+            deaths
+        ]
         
         # ウィンドウを全て閉じる
         driver.quit()
