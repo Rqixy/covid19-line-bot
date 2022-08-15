@@ -9,8 +9,8 @@ from linebot.models import (FollowEvent, MessageEvent, TextMessage,
 from db.infection.print_week import oneweek_infected_info
 from db.userid.delete import delete_user_id
 from db.userid.insert import insert_user_id
-from messages.infected_info_reply import oneday_infected_info_reply
-from messages.quick_reply import quick_reply_for_reply
+from messages.infected_info_message import oneday_infected_info_message
+from messages.messages import reply_message
 
 app = Flask(__name__)
 
@@ -49,8 +49,8 @@ def handle_follow(event):
     # データベースにuser_idを格納する
     insert_user_id(user_id)
 
-    # quick replyを表示する
-    quick_reply_for_reply(event.reply_token, text="友だち追加ありがとうございます\n\n午後1時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
+    # 返信する
+    reply_message(event.reply_token, text="友だち追加ありがとうございます\n\n午後1時に最新のコロナ感染人数を送信するよ！\n\n最新のコロナ感染情報を知りたい場合は、\"最新\"\n1週間のコロナ感染情報を知りたい場合は、\"1周間\"\nと入力してください！\n\nまた下のメッセージボタンからでも確認できるよ！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n")
 
 # ブロックしたらデータベースからuser_idを削除する
 @handler.add(UnfollowEvent)
@@ -63,27 +63,24 @@ def handle_unfollow(event):
 # Lineのメッセージの取得と返信内容の設定
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    # ユーザーからのメッセージを取得する
     event_text = event.message.text
 
-    if event_text == '最新' or event_text == '最新情報':
-        day = 0
-        oneday_infected_info_reply(event, day)
-    elif event_text == '昨日' or event_text == '1日前' or event_text == '一日前':
-        day = 1
-        oneday_infected_info_reply(event, day)
-    elif event_text == '一昨日' or event_text == '2日前' or event_text == '二日前':
-        day = 2
-        oneday_infected_info_reply(event, day)
-    elif event_text == '3日前' or event_text == '三日前':
-        day = 3
-        oneday_infected_info_reply(event, day)
+    if event_text == '今日' or event_text == '最新' or event_text == '最新情報':
+        oneday_infected_info_message(event, 0)
+    elif event_text == '昨日' or event_text == '1日前' or event_text == '１日前' or event_text == '一日前':
+        oneday_infected_info_message(event, 1)
+    elif event_text == '一昨日' or event_text == '2日前' or event_text == '２日前' or event_text == '二日前':
+        oneday_infected_info_message(event, 2)
+    elif event_text == '3日前' or event_text == '３日前' or event_text == '三日前':
+        oneday_infected_info_message(event, 3)
     elif event_text == '1週間' or event_text == '１週間' or event_text == '一週間':
-        week_data_array = oneweek_infected_info()
-        line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-        quick_reply_for_reply(event.reply_token, text=line_text_week_data)
+        oneweek_infected_info_array = oneweek_infected_info()
+        line_text_week_info = oneweek_infected_info_array[0] + oneweek_infected_info_array[1] + oneweek_infected_info_array[2] + oneweek_infected_info_array[3] + oneweek_infected_info_array[4] + oneweek_infected_info_array[5] + oneweek_infected_info_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
+        reply_message(event.reply_token, text=line_text_week_info)
     else:
-        reply_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-        quick_reply_for_reply(event.reply_token, text=reply_text)
+        error_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
+        reply_message(event.reply_token, text=error_text)
 
 # ポートの設定
 if __name__ == '__main__':
