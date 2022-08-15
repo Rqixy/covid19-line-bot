@@ -41,5 +41,3 @@ def insert_infected_data() -> (list | str):
     new_data = print_infected_day(0)
 
     return new_data
-
-print(insert_infected_data())
