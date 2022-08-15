@@ -1,7 +1,7 @@
 import db.config as config
 import psycopg2
-from db.infection.check.new_infected_day import check_new_infected_day
-from db.infection.print_day import oneday_infected_info
+from db.infection.check.new_infected_day import check_new_infected_info
+from db.infection.print_oneday import oneday_infected_info
 from db.infection.unit.delete_oldest_info import delete_oldest_info
 from scraping.infected_info import infected_info_scraping
 
@@ -13,8 +13,8 @@ def insert_infected_info() -> (list | str):
 
     # スクレイピングで情報が正しく取得できていなかったら情報を取得できなかったことを送信する
     if infected_info == None:
-        text = "情報が正しく取得されませんでした\n午後6時にもう一度送信されます！"
-        return text
+        error_text = "情報が正しく取得されませんでした\n午後6時にもう一度送信されます！"
+        return error_text
 
     # 情報が取得されていたら、変数に格納する
     infected_day = infected_info[0]
@@ -26,9 +26,9 @@ def insert_infected_info() -> (list | str):
     with psycopg2.connect(config.DATABASE_URL) as conn:
         with conn.cursor() as curs:
             # もし新しいデータが入ってこなかったら新しいデータが無いことを送信する
-            if not check_new_infected_day(curs, infected_day):
-                text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
-                return text
+            if not check_new_infected_info(curs, infected_day):
+                error_text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
+                return error_text
 
             # スクレイピングで取ってきた配列のデータを格納する
             sql = "INSERT INTO infected_people (new_people, severe_people, deaths, infected_day) VALUES (%s, %s, %s, %s)"
