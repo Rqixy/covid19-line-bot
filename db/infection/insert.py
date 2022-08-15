@@ -1,14 +1,14 @@
 import psycopg2
 import db.config as config
-import db.infection.print_day as PD
-import db.infection.unit.delete_old_data as DOD
-import db.infection.check.new_infected_data as NID
-import scraping.infected_people as SC
+from db.infection.print_day import print_infected_day
+from db.infection.unit.delete_old_data import delete_old_data
+from db.infection.check.new_infected_data import new_infected_day
+from scraping.infected_people import infected_people_scraping
 
 # 感染者データの追加
 def insert_infected_data() -> (list | str):
     # スクレイピングを行い、配列で感染情報を取得する
-    infected_info = SC.infected_people_scraping()
+    infected_info = infected_people_scraping()
 
     # スクレイピングで情報が正しく取得できていなかったら情報を取得できなかったことを送信する
     if infected_info == None:
@@ -25,7 +25,7 @@ def insert_infected_data() -> (list | str):
     with psycopg2.connect(config.DATABASE_URL) as conn:
         with conn.cursor() as curs:
             # もし新しいデータが入ってこなかったら新しいデータが無いことを送信する
-            if not NID.new_infected_day(curs, infected_day):
+            if not new_infected_day(curs, infected_day):
                 text = "新しい感染者情報が更新されていません！\n午後6時にもう一度送信されます！"
                 return text
 
@@ -34,9 +34,9 @@ def insert_infected_data() -> (list | str):
             curs.execute(sql, (new_people, severe_people, deaths, infected_day))
 
             # レコードが7個より大きくなったら一番古いレコードを削除する
-            DOD.delete_old_data(curs)
+            delete_old_data(curs)
 
-            # 新しいデータが更新されたら最新情報を表示する
-            new_data = PD.print_infected_day(0)
+    # 新しいデータが更新されたら最新情報を表示する
+    new_infected_info = print_infected_day(0)
 
-            return new_data
+    return new_infected_info

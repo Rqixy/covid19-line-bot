@@ -1,9 +1,9 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import scraping.config as config
-import scraping.people as PP
-import scraping.infected_day as ID
-import scraping.check.get_info as GI
+from scraping.config import setting_web_driver
+from scraping.people import people_scraping
+from scraping.infected_day import infected_day_scraping
+from scraping.check.get_info import get_info
 
 # 取得したい情報の要素までのxpathを連想配列に格納する
 # 取得したい情報がiframeを使用して表示されているのでirame内に入るためのxpathも用意しておく
