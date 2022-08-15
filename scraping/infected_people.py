@@ -1,6 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from scraping.config import setting_web_driver
+from scraping.setting import setting_web_driver
 from scraping.people import people_scraping
 from scraping.infected_day import infected_day_scraping
 from scraping.check.get_info import get_info
@@ -33,7 +33,7 @@ deaths_xpaths = {
 def infected_people_scraping() -> (list | None):
     try:
         # WebDriverの設定
-        driver = config.setting_web_driver()
+        driver = setting_web_driver()
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
         # ページが読み込まれるまで待機
@@ -42,23 +42,23 @@ def infected_people_scraping() -> (list | None):
 
         infected_info = []
 
-        infected_day = ID.infected_day_scraping(driver, infected_day_xpaths)
+        infected_day = infected_day_scraping(driver, infected_day_xpaths)
         infected_info.append(infected_day)
         
-        new_infected_people = PP.people_scraping(driver, new_infected_xpaths)
+        new_infected_people = people_scraping(driver, new_infected_xpaths)
         infected_info.append(new_infected_people)
         
-        severe_people = PP.people_scraping(driver, severe_xpaths)
+        severe_people = people_scraping(driver, severe_xpaths)
         infected_info.append(severe_people)
         
-        deaths = PP.people_scraping(driver, deaths_xpaths)
+        deaths = people_scraping(driver, deaths_xpaths)
         infected_info.append(deaths)
         
         # ウィンドウを全て閉じる
         driver.quit()
         
         # 一つでも情報が取得出来ていなかったら、Noneを返す
-        if not GI.get_info(infected_info):
+        if not get_info(infected_info):
             return None
 
         return infected_info
