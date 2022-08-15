@@ -12,7 +12,7 @@ eraDict = {
 }
 
 # 和暦から西暦に変換する
-def japanese_calendar_converter(text: str):
+def japanese_calendar_converter(text: str) -> datetime.date:
     # 送られてきた日付から「0:00現在」を削除
     replaced_text = text.replace("0:00現在", '')
 
