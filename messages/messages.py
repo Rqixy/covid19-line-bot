@@ -1,8 +1,9 @@
 # クイックメッセージを利用するためのモジュール
-from linebot import LineBotApi
-from linebot.models import TextSendMessage, QuickReply, QuickReplyButton
-from linebot.models.actions import PostbackAction
 import os
+
+from linebot import LineBotApi
+from linebot.models import QuickReply, QuickReplyButton, TextSendMessage
+from linebot.models.actions import PostbackAction
 
 # アクセストークンの取得
 LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
@@ -17,16 +18,16 @@ quick_reply_buttons = [
     QuickReplyButton(action=PostbackAction(label='1週間', data='1週間', text='1週間'))
 ]
 
-# 返信用のクイックリプライの処理
-def quick_reply_for_reply(token, text):
+# 返信処理
+def reply_message(token, text):
     try:
         messages = TextSendMessage(text=text, quick_reply=QuickReply(items=quick_reply_buttons))
         return line_bot_api.reply_message(token, messages=messages)
     except Exception as e:
         print("メッセージエラー発生！ : " + str(type(e)) + " : " + e.args + " : " + e.message) 
 
-# 自動送信用のクイックリプライの処理
-def quick_reply_for_send(user_id, text):
+# 自動送信用の処理
+def push_message(user_id, text):
     try:
         messages = TextSendMessage(text=text, quick_reply=QuickReply(items=quick_reply_buttons))
         return line_bot_api.push_message(user_id, messages=messages)
