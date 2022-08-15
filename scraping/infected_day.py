@@ -1,4 +1,3 @@
-from dis import dis
 from selenium import webdriver
 from scraping.scraping import scraping
 
