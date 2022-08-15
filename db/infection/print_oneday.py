@@ -3,9 +3,9 @@ import psycopg2
 
 
 # 引数で与えられたレコードを返す
-def oneday_infected_info(day: int) -> (list | str):
-    # もし送られてきた数字が１週間の範囲外ならエラー
-    if day < 0 or day >= 7:
+def oneday_infected_info(num: int) -> (list | str):
+    # もし送られてきた数字がレコードの範囲外ならエラー
+    if num < 0 or num >= 7:
         error_text = "入力された値が範囲外だよ！"
         return error_text
 
@@ -13,7 +13,7 @@ def oneday_infected_info(day: int) -> (list | str):
     with psycopg2.connect(config.DATABASE_URL) as conn:
         with conn.cursor() as curs:
             sql = "SELECT * FROM infected_people ORDER BY id DESC LIMIT 1 OFFSET %s;"
-            curs.execute(sql, (str(day),))
+            curs.execute(sql, (str(num),))
 
             infected_info_array = []
             for infected_info in curs.fetchall():
