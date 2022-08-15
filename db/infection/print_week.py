@@ -2,7 +2,7 @@ import db.config as config
 import psycopg2
 
 # 1週間分の感染情報を取得して返す
-def one_week_infected_info() -> list:
+def oneweek_infected_info() -> list:
     # データベースに接続する
     with psycopg2.connect(config.DATABASE_URL) as conn:
         with conn.cursor() as curs:

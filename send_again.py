@@ -1,10 +1,10 @@
 # 午後6時に再送信するプログラム
-from db.infection.insert import insert_infected_data
+from db.infection.insert import insert_infected_info
 from messages.send_message import send_message
 import sys
 
 # データベースから最新のデータ情報を持ってくる
-new_data = insert_infected_data()
+new_data = insert_infected_info()
 
 # もうすでに新しいデータが更新されていたら動作を止める
 if type(new_data) is str:

@@ -3,7 +3,7 @@ import db_test.config as config
 from db_test.infection.print_day import print_infected_day
 from db_test.infection.unit.delete_old_data import delete_old_data
 from db_test.infection.check.new_infected_data import new_infected_day
-from scraping.infected_people import infected_people_scraping
+from scraping.infected_info import infected_people_scraping
 
 # 感染者データの追加
 def insert_infected_data() -> (list | str):

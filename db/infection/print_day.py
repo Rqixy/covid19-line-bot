@@ -3,7 +3,7 @@ import psycopg2
 
 
 # 引数で与えられたレコードを返す
-def one_day_infected_info(day: int) -> (list | str):
+def oneday_infected_info(day: int) -> (list | str):
     # もし送られてきた数字が１週間の範囲外ならエラー
     if day < 0 or day >= 7:
         error_text = "入力された値が範囲外だよ！"

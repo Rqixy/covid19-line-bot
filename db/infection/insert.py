@@ -1,8 +1,8 @@
 import db.config as config
 import psycopg2
-from db.infection.check.new_infected_data import check_new_infected_day
-from db.infection.print_day import one_day_infected_info
-from db.infection.unit.delete_old_data import delete_oldest_info
+from db.infection.check.new_infected_day import check_new_infected_day
+from db.infection.print_day import oneday_infected_info
+from db.infection.unit.delete_oldest_info import delete_oldest_info
 from scraping.infected_info import infected_info_scraping
 
 
@@ -38,6 +38,6 @@ def insert_infected_info() -> (list | str):
             delete_oldest_info(curs)
 
     # 新しいデータが更新されたら最新情報を表示する
-    new_infected_info = one_day_infected_info(0)
+    new_infected_info = oneday_infected_info(0)
 
     return new_infected_info
