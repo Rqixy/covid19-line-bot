@@ -84,7 +84,7 @@ def handle_message(event):
         quick_reply_for_reply(event.reply_token, text=line_text_week_data)
     else:
         reply_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-        quick_reply_for_reply(event.reply_token, reply_text)
+        quick_reply_for_reply(event.reply_token, text=reply_text)
 
 # ポートの設定
 if __name__ == '__main__':
