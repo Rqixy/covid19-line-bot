@@ -30,7 +30,7 @@ deaths_xpaths = {
 }
 
 # 感染者情報をスクレイピングする
-def infected_people_scraping() -> (list | None):
+def infected_info_scraping() -> (list | None):
     try:
         # WebDriverの設定
         driver = setting_web_driver()
