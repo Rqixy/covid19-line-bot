@@ -13,6 +13,8 @@ from messages.quick_reply import quick_reply_for_reply
 from messages.infected_info_reply import infected_info_reply
 import os
 
+from db_test.infection.insert import insert_infected_data
+
 app = Flask(__name__)
 
 # 環境変数取得
@@ -82,6 +84,9 @@ def handle_message(event):
         week_data_array = print_infected_week()
         line_text_week_data = week_data_array[0] + week_data_array[1] + week_data_array[2] + week_data_array[3] + week_data_array[4] + week_data_array[5] + week_data_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         quick_reply_for_reply(event.reply_token, text=line_text_week_data)
+    elif event_text == 'testaaa':
+        print(insert_infected_data())
+        quick_reply_for_reply(event.reply_token, text="DB Insert")
     else:
         reply_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         quick_reply_for_reply(event.reply_token, text=reply_text)
