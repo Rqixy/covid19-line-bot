@@ -1,4 +1,5 @@
 import os
+import env
 
 from flask import Flask, abort, request
 from linebot import WebhookHandler
@@ -15,8 +16,7 @@ from messages.messages import reply_message
 app = Flask(__name__)
 
 # 環境変数取得
-LINE_CHANNEL_SECRET = os.environ["LINE_CHANNEL_SECRET"]
-handler = WebhookHandler(LINE_CHANNEL_SECRET)
+handler = WebhookHandler(env.LINE_CHANNEL_SECRET)
 
 # Webhookからのリクエストをチェックする
 @app.route("/callback", methods=['POST'])

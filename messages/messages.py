@@ -1,13 +1,13 @@
 # クイックメッセージを利用するためのモジュール
 import os
+import env
 
 from linebot import LineBotApi
 from linebot.models import QuickReply, QuickReplyButton, TextSendMessage
 from linebot.models.actions import PostbackAction
 
 # アクセストークンの取得
-LINE_CHANNEL_ACCESS_TOKEN = os.environ["LINE_CHANNEL_ACCESS_TOKEN"]
-line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+line_bot_api = LineBotApi(env.LINE_CHANNEL_ACCESS_TOKEN)
 
 # クイックリプライボタン作成
 quick_reply_buttons = [

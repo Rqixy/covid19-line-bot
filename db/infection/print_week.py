@@ -1,10 +1,10 @@
-import db.config as config
+import env
 import psycopg2
 
 # 1週間分の感染情報を取得して返す
 def oneweek_infected_info() -> list:
     # データベースに接続する
-    with psycopg2.connect(config.DATABASE_URL) as conn:
+    with psycopg2.connect(env.DATABASE_URL) as conn:
         with conn.cursor() as curs:
             sql = "SELECT * FROM infected_info ORDER BY id;"
             curs.execute(sql)

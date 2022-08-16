@@ -1,4 +1,4 @@
-import db.config as config
+import env
 import psycopg2
 from db.infection.check.new_infected_day import check_new_infected_info
 from db.infection.print_oneday import oneday_infected_info
@@ -23,7 +23,7 @@ def insert_infected_info() -> (list | str):
     deaths = infected_info[3]
 
     # データベースに接続する
-    with psycopg2.connect(config.DATABASE_URL) as conn:
+    with psycopg2.connect(env.DATABASE_URL) as conn:
         with conn.cursor() as curs:
             # もし新しいデータが入ってこなかったら新しいデータが無いことを送信する
             if not check_new_infected_info(curs, infected_day):

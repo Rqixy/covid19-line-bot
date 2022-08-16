@@ -1,4 +1,4 @@
-import db.config as config
+import env
 import psycopg2
 
 
@@ -10,7 +10,7 @@ def oneday_infected_info(num: int) -> (list | str):
         return error_text
 
     # データベースに接続する
-    with psycopg2.connect(config.DATABASE_URL) as conn:
+    with psycopg2.connect(env.DATABASE_URL) as conn:
         with conn.cursor() as curs:
             sql = "SELECT * FROM infected_info ORDER BY id DESC LIMIT 1 OFFSET %s;"
             curs.execute(sql, (str(num),))
