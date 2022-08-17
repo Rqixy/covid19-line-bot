@@ -239,3 +239,8 @@ Webhook URLに**メモしたURL/callback**(ex: https://rqixy-covid19bot.herokuap
 その後、検証を押し、成功と表示されたら完成です。
 ![](https://user-images.githubusercontent.com/67447178/185094684-3fc86760-08b5-4617-b3c5-5c2b7dc4ff9b.png)
 
+### logの確認
+こちらのコマンドで、**デプロイ時のLogやLINEBotの動作時のLog**の確認を行います。
+```
+covid19-line-bot $ heroku logs --tail
+```
