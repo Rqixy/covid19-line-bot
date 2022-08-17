@@ -1,7 +1,7 @@
 from selenium import webdriver
 
 # WebDriverの設定
-def setting_web_driver() -> webdriver:
+def setting_webdriver() -> webdriver:
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     driver = webdriver.Chrome(options=options)
