@@ -13,6 +13,9 @@ from db.userid.insert import insert_user_id
 from messages.infected_info_message import oneday_infected_info_message
 from messages.messages import reply_message
 
+# test
+from scraping.infected_info import infected_info_scraping
+
 app = Flask(__name__)
 
 # 環境変数取得
@@ -78,6 +81,13 @@ def handle_message(event):
         oneweek_infected_info_array = oneweek_infected_info()
         line_text_week_info = oneweek_infected_info_array[0] + oneweek_infected_info_array[1] + oneweek_infected_info_array[2] + oneweek_infected_info_array[3] + oneweek_infected_info_array[4] + oneweek_infected_info_array[5] + oneweek_infected_info_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         reply_message(event.reply_token, text=line_text_week_info)
+    elif event_text == 'testaaa':
+        result = infected_info_scraping()
+        print(result)
+        if type(result) is list:
+                reply_message(event.reply_token, text="スクレピング成功！！！")
+        elif type(result) is None:
+                reply_message(event.reply_token, text="スクレピング失敗...")
     else:
         error_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         reply_message(event.reply_token, text=error_text)
