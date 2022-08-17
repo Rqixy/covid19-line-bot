@@ -5,20 +5,20 @@ from db.infection.insert_infected_info import insert_infected_info
 from messages.push_to_users import push_to_users
 from messages.text_on_line import infected_info_on_line
 
-# データベースから最新のデータ情報を持ってくる
+# 最新のデータ情報を取得し、データベースに登録する
 new_infected_info = insert_infected_info()
 
 # もうすでに新しいデータが更新されていたら動作を止める
 if type(new_infected_info) is str:
     sys.exit()
 
-# もし新しいデータが更新されていなかったら、ユーザーに送信するメッセージを作成する
+# 新しい情報が取得できていたら、LINEに送信するテキストに変換して送信する
 if type(new_infected_info) is list:
     # ユーザーに送信するメッセージの作成
-    line_text_new_info = infected_info_on_line(new_infected_info)
+    line_text = infected_info_on_line(new_infected_info)
 else:
     print("ERROR : 情報が何か変です！" + new_infected_info)
     sys.exit()
 
 # ユーザーに送信する
-push_to_users(line_text_new_info)
+push_to_users(line_text)
