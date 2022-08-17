@@ -2,9 +2,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 from scraping.check.get_info import check_get_info
-from scraping.infected_day import infected_day_scraping
-from scraping.people import people_scraping
-from scraping.setting import setting_web_driver
+from scraping.infected_day_scraping import infected_day_scraping
+from scraping.people_scraping import people_scraping
+from scraping.setting import setting_webdriver
 
 
 # 取得したい情報の要素までのxpathを連想配列に格納する 
@@ -34,7 +34,7 @@ deaths_xpaths = {
 def infected_info_scraping() -> (list | None):
     try:
         # WebDriverの設定
-        driver = setting_web_driver()
+        driver = setting_webdriver()
         # 指定したURLに遷移
         driver.get('https://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html')
 
