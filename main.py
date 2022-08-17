@@ -3,14 +3,12 @@ import os
 from flask import Flask, abort, request
 from linebot import WebhookHandler
 from linebot.exceptions import InvalidSignatureError
-from linebot.models import (FollowEvent, MessageEvent, TextMessage,
-                            UnfollowEvent)
+from linebot.models import FollowEvent, MessageEvent, TextMessage, UnfollowEvent
 
 import env
 from db.userid.delete_user_id import delete_user_id
 from db.userid.insert_user_id import insert_user_id
-from messages.reply_infected_info import (reply_oneday_infected_info,
-                                            reply_oneweek_infected_info)
+from messages.reply_infected_info import reply_oneday_infected_info, reply_oneweek_infected_info
 from messages.messages import reply_message
 
 app = Flask(__name__)
