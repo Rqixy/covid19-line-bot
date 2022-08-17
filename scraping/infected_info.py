@@ -6,10 +6,9 @@ from scraping.infected_day import infected_day_scraping
 from scraping.people import people_scraping
 from scraping.setting import setting_web_driver
 
-"""
-取得したい情報の要素までのxpathを連想配列に格納する 
-取得したい情報がiframeを使用して表示されているのでirame内に入るためのxpathも用意しておく
-"""
+
+# 取得したい情報の要素までのxpathを連想配列に格納する 
+# 取得したい情報がiframeを使用して表示されているのでirame内に入るためのxpathも用意しておく
 # 感染日のxpath
 infected_day_xpaths = {
     'iframe': '/html/body/div[1]/main/div[2]/div/div/div[3]/div/iframe',
@@ -50,12 +49,7 @@ def infected_info_scraping() -> (list | None):
         deaths = people_scraping(driver, deaths_xpaths)
 
         # 取得した情報を配列に格納する
-        infected_info = [
-            infected_day,
-            new_infected_people,
-            severe_people,
-            deaths
-        ]
+        infected_info = [infected_day, new_infected_people, severe_people, deaths]
         
         # ウィンドウを全て閉じる
         driver.quit()
