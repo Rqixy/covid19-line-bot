@@ -87,8 +87,8 @@
 ## ディレクトリのダウンロード
 任意のディレクトリに移動したら、下記のコマンドを入力してダウンロードして、移動しておきます。
 ```
-git clone https://github.com/Rqixy/covid19-line-bot.git
-cd covid19-line-bot
+$ git clone https://github.com/Rqixy/covid19-line-bot.git
+$ cd covid19-line-bot
 ```
 
 ***
@@ -102,23 +102,23 @@ Windowsの方は、こちらのリンクからHeroku CLIのインストーラー
 
 Macの方は、下記のコマンドでインストールします。
 ```
-​brew tap heroku/brew && brew install heroku
+covid19-line-bot $ ​brew tap heroku/brew && brew install heroku
 ```
 
 インストールが完了したらTerminal上でログインします。
 
 ```
-heroku login
+covid19-line-bot $ heroku login
 ```
 
 ### アプリ作成
 アプリを作成していきます。
 ```
-git init
-heroku apps:create 他と被らない名前(ex: rqixy-covid19bot)
-git add .
-git commit -m "make it better"
-git push heroku master
+covid19-line-bot $ git init
+covid19-line-bot $ heroku apps:create 他と被らない名前(ex: rqixy-covid19bot)
+covid19-line-bot $ git add .
+covid19-line-bot $ git commit -m "make it better"
+covid19-line-bot $ git push heroku master
 ```
 (今後の説明において、**rqixy-covid19bot**というアプリ名を使用していきます。)
 
@@ -126,7 +126,7 @@ git push heroku master
 スリープ対策と午後1時と午後6時に送信するためのスケジューラーを設定していきます。
 
 ```
-heroku addons:create scheduler:standard
+covid19-line-bot $ heroku addons:create scheduler:standard
 ```
 
 作成できたら、[Herokuダッシュボードページ](https://dashboard.heroku.com/apps)に移動し、作成したアプリを選択します。
@@ -160,7 +160,7 @@ heroku addons:create scheduler:standard
 
 まず、HerokuにPostgreSQLを追加します。
 ```
-heroku addons:create heroku-postgresql:hobby-dev --app rqixy-covid19bot
+covid19-line-bot $ heroku addons:create heroku-postgresql:hobby-dev --app rqixy-covid19bot
 ```
 
 追加できたら、[Herokuダッシュボードページ](https://dashboard.heroku.com/apps)に移動し、作成したアプリを選択します。
@@ -172,7 +172,7 @@ Settingページに移動し、View Credentialsを選択します。
 
 Heroku CLIのコマンドをコピーし、Terminalに貼り付け、DB内に入ります。
 ```
-heroku pg:psql postgresql-rectangular-77122 --app rqixy-covid19bot
+covid19-line-bot $ heroku pg:psql postgresql-rectangular-77122 --app rqixy-covid19bot
 ```
 
 #### テーブル作成
@@ -202,22 +202,22 @@ Terminal上で設定していきます。
 
 環境変数の確認
 ```
-heroku config
+covid19-line-bot $ heroku config
 ```
-この時点で、DATABASE_URLは設定いるかと思われます。
+この時点で、DATABASE_URLは設定されていると思われます。
 
 設定されてない場合、Heroku PostgresのSettingページのView Credentialsから、URIをコピーしてきます。
 
 コピーしてきたURIを**DATABASE_URL**という変数名で設定します。
 ```
-heroku config:set DATABASE_URL=コピーしてきたURI
+covid19-line-bot $ heroku config:set DATABASE_URL=コピーしてきたURI
 ```
 
 LINEのチャネル作成時にメモしておいた、**チャネルシークレットをLINE_CHANNEL_SECRET**、**チャネルアクセストークンをLINE_CHANNEL_ACCESS_TOKEN**という変数名で設定します。
 
 ```
-heroku config:set LINE_CHANNEL_SECRET=メモしたチャネルシークレット
-heroku config:set LINE_CHANNEL_ACCESS_TOKEN=メモしたチャネルアクセストークン
+covid19-line-bot $ heroku config:set LINE_CHANNEL_SECRET=メモしたチャネルシークレット
+covid19-line-bot $ heroku config:set LINE_CHANNEL_ACCESS_TOKEN=メモしたチャネルアクセストークン
 ```
 
 ***
