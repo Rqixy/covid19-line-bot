@@ -2,7 +2,7 @@ import env
 import psycopg2
 
 # user_idを配列で取得して返す
-def print_user_id() -> list:
+def print_users_id() -> list:
     # データベースに接続する
     with psycopg2.connect(env.DATABASE_URL) as conn:
         with conn.cursor() as curs:
