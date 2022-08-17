@@ -1,5 +1,4 @@
 import os
-import env
 
 from flask import Flask, abort, request
 from linebot import WebhookHandler
@@ -7,10 +6,11 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import (FollowEvent, MessageEvent, TextMessage,
                             UnfollowEvent)
 
-from db.infection.print_week import oneweek_infected_info
+import env
 from db.userid.delete import delete_user_id
 from db.userid.insert import insert_user_id
-from messages.infected_info_message import oneday_infected_info_message
+from messages.infected_info_message import (oneday_infected_info_message,
+                                            oneweek_infected_info_message)
 from messages.messages import reply_message
 
 app = Flask(__name__)
@@ -66,6 +66,7 @@ def handle_message(event):
     # ユーザーからのメッセージを取得する
     event_text = event.message.text
 
+    # ユーザーからのメッセージに対して返信内容を変更する
     if event_text == '今日' or event_text == '最新' or event_text == '最新情報':
         oneday_infected_info_message(event, 0)
     elif event_text == '昨日' or event_text == '1日前' or event_text == '１日前' or event_text == '一日前':
@@ -75,9 +76,7 @@ def handle_message(event):
     elif event_text == '3日前' or event_text == '３日前' or event_text == '三日前':
         oneday_infected_info_message(event, 3)
     elif event_text == '1週間' or event_text == '１週間' or event_text == '一週間':
-        oneweek_infected_info_array = oneweek_infected_info()
-        line_text_week_info = oneweek_infected_info_array[0] + oneweek_infected_info_array[1] + oneweek_infected_info_array[2] + oneweek_infected_info_array[3] + oneweek_infected_info_array[4] + oneweek_infected_info_array[5] + oneweek_infected_info_array[6] + "\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
-        reply_message(event.reply_token, text=line_text_week_info)
+        oneweek_infected_info_message(event)
     else:
         error_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         reply_message(event.reply_token, text=error_text)
