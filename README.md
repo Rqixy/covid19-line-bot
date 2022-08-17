@@ -224,9 +224,16 @@ covid19-line-bot $ heroku config:set LINE_CHANNEL_ACCESS_TOKEN=メモしたチ�
 
 ## 最後に
 
-また、[LINE Developers](https://developers.line.biz/ja/)に移動し、Webhookの設定をします。
-#### Webhook設定
-Webhook URLにURLを入力し、Webhookの利用をオンにしてください。
+
+Webhookに設定するURLを取得します。
+
+[Herokuダッシュボードページ](https://dashboard.heroku.com/apps)に移動し、作成したアプリを選択します。
+右上の**Open app**をクリックし、そのURLをメモしておきます。
+
+その後、[LINE Developers](https://developers.line.biz/ja/)に移動し、Webhookの設定をします。
+
+### Webhook設定
+Webhook URLに**メモしたURL/callback**(ex: https://rqixy-covid19bot.herokuapp.com/callback)と入力し、Webhookの利用をオンにしてください。
 ![](https://user-images.githubusercontent.com/67447178/185094354-52fbc7a1-a7b6-4bab-afee-14951324f69a.png)
 
 その後、検証を押し、成功と表示されたら完成です。
