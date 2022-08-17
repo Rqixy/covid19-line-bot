@@ -172,7 +172,7 @@ Settingページに移動し、View Credentialsを選択します。
 
 Heroku CLIのコマンドをコピーし、Terminalに貼り付け、DB内に入ります。
 ```
-covid19-line-bot $ heroku pg:psql postgresql-rectangular-77122 --app rqixy-covid19bot
+covid19-line-bot $ Heroku CLIのコマンド
 ```
 
 #### テーブル作成
@@ -220,7 +220,23 @@ covid19-line-bot $ heroku config:set LINE_CHANNEL_SECRET=メモしたチャネ�
 covid19-line-bot $ heroku config:set LINE_CHANNEL_ACCESS_TOKEN=メモしたチャネルアクセストークン
 ```
 
+### chromedriver追加
+スクレピングに使用するChrome driverをHerokuに追加します。
+[Herokuダッシュボードページ](https://dashboard.heroku.com/apps)に移動し、作成したアプリを選択します。
+
+Settingに移動し、Buildpacksの **Add buildpack**で下記のURLを追加します。
+
+**https://github.com/heroku/heroku-buildpack-chromedriver.git**
+**https://github.com/heroku/heroku-buildpack-google-chrome.git**
+
+![](https://user-images.githubusercontent.com/67447178/185114571-6bc839f8-ccda-4a39-850f-56186c706cac.png)
 ***
+
+追加したら、空のコミットで更新します。
+```
+covid19-line-bot $ git commit --allow-empty -m "add chrome driver"
+covid19-line-bot $ git push heroku master
+```
 
 ## 最後に
 
