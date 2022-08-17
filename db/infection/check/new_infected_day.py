@@ -9,7 +9,7 @@ def check_new_infected_info(curs, new_infected_day: str) -> bool:
 
     # DB内の最新の日付のみ取得
     for infected_info in latest_infected_info_in_db:
-        latest_infected_day_in_db = str(infected_info[4])
+        latest_infected_day_in_db = str(infected_info[1])
 
     # 各日付をdatetime型に変換
     converted_new_infected_day = japanese_calendar_converter(new_infected_day)
