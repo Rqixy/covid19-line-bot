@@ -7,10 +7,10 @@ from linebot.models import (FollowEvent, MessageEvent, TextMessage,
                             UnfollowEvent)
 
 import env
-from db.userid.delete import delete_user_id
-from db.userid.insert import insert_user_id
-from messages.infected_info_message import (oneday_infected_info_message,
-                                            oneweek_infected_info_message)
+from db.userid.delete_user_id import delete_user_id
+from db.userid.insert_user_id import insert_user_id
+from messages.reply_infected_info import (reply_oneday_infected_info,
+                                            reply_oneweek_infected_info)
 from messages.messages import reply_message
 
 app = Flask(__name__)
@@ -68,15 +68,15 @@ def handle_message(event):
 
     # ユーザーからのメッセージに対して返信内容を変更する
     if event_text == '今日' or event_text == '最新' or event_text == '最新情報':
-        oneday_infected_info_message(event, 0)
+        reply_oneday_infected_info(event, 0)
     elif event_text == '昨日' or event_text == '1日前' or event_text == '１日前' or event_text == '一日前':
-        oneday_infected_info_message(event, 1)
+        reply_oneday_infected_info(event, 1)
     elif event_text == '一昨日' or event_text == '2日前' or event_text == '２日前' or event_text == '二日前':
-        oneday_infected_info_message(event, 2)
+        reply_oneday_infected_info(event, 2)
     elif event_text == '3日前' or event_text == '３日前' or event_text == '三日前':
-        oneday_infected_info_message(event, 3)
+        reply_oneday_infected_info(event, 3)
     elif event_text == '1週間' or event_text == '１週間' or event_text == '一週間':
-        oneweek_infected_info_message(event)
+        reply_oneweek_infected_info(event)
     else:
         error_text = "入力する言葉が違うよ！\n\n最新情報は\"最新\"\n一週間の情報は\"一週間\"\n\nと入力してね！\n\n詳しい感染状況はこちらのサイトから確認してね！\nhttps://www.mhlw.go.jp/stf/covid-19/kokunainohasseijoukyou.html\n"
         reply_message(event.reply_token, text=error_text)
