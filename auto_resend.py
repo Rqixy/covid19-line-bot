@@ -1,8 +1,8 @@
 # 午後1時に新しい情報がなかった際に、午後6時に再送信するプログラム
 import sys
 
-from db.infection.insert import insert_infected_info
-from messages.send_to_users import send_to_users
+from db.infection.insert_infected_info import insert_infected_info
+from messages.push_to_users import push_to_users
 from messages.text_on_line import infected_info_on_line
 
 # データベースから最新のデータ情報を持ってくる
@@ -21,4 +21,4 @@ else:
     sys.exit()
 
 # ユーザーに送信する
-send_to_users(line_text_new_info)
+push_to_users(line_text_new_info)
