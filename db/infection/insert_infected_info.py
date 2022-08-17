@@ -1,9 +1,9 @@
 import env
 import psycopg2
 from db.infection.check.new_infected_day import check_new_infected_info
-from db.infection.print_oneday import oneday_infected_info
+from db.infection.oneday_infected_info import oneday_infected_info
 from db.infection.unit.delete_oldest_info import delete_oldest_info
-from scraping.infected_info import infected_info_scraping
+from scraping.infected_info_scraping import infected_info_scraping
 
 
 # 感染者情報の追加
