@@ -9,15 +9,15 @@ def check_new_infected_info(curs, new_infected_day: str) -> bool:
 
     # DB内の最新の日付のみ取得
     for infected_info in latest_infected_info_in_db:
-        latest_infected_day_in_db = str(infected_info[1])
+        latest_infected_day_in_db = infected_info[1]
 
-    # 各日付をdatetime型に変換
-    converted_new_infected_day = japanese_calendar_converter(new_infected_day)
-    converted_latest_infected_day_in_db = japanese_calendar_converter(latest_infected_day_in_db)
+    # 和暦の日付を西暦の日付のdatetime型に変換
+    date_new_infected_day = japanese_calendar_converter(new_infected_day)
+    date_latest_infected_day_in_db = japanese_calendar_converter(latest_infected_day_in_db)
 
-    # DB内の最新の日付と送られてきた日付を比較し、
-    # 送られてきた日付がDB内の日付より前の日付か、同じ日付だったらfalseを返す
-    if converted_new_infected_day <= converted_latest_infected_day_in_db:
+    # DB内の最新の日付と新しく送られてきた日付を比較し、
+    # 新しく送られてきた日付がDB内の日付より前の日付か、同じ日付だったらfalseを返す
+    if date_new_infected_day <= date_latest_infected_day_in_db:
         return False
     
     return True
