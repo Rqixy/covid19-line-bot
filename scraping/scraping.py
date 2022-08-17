@@ -14,11 +14,12 @@ def scraping(driver: webdriver, xpaths: dict) -> str:
     for _ in range(10):
         time.sleep(2)   # 明示的にページの読み込みを待機する
 
-        # iframeに入る
+        # iframe内に入る
         iframe_element = driver.find_element(By.XPATH, xpaths['iframe'])
         driver.switch_to.frame(iframe_element)
         time.sleep(2)   # 明示的にページの読み込みを待機する
 
+        # 情報を取得する
         element = driver.find_element(By.XPATH, xpaths['xpath'])
         scraped_text = element.text
 
