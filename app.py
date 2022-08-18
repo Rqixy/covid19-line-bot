@@ -13,7 +13,7 @@ from messages.messages import reply_message
 
 app = Flask(__name__)
 
-# 環境変数取得
+# チャネルシークレット取得
 handler = WebhookHandler(env.LINE_CHANNEL_SECRET)
 
 # Webhookからのリクエストをチェックする
@@ -38,7 +38,7 @@ def callback():
     # handleの処理を終えればOK
     return 'OK'
 
-# 友達追加したときの処理とメッセージにボタン追加する処理をする
+# 友達追加したときにデータベースにuser_idを保存し、追加時のメッセージを送信する
 @handler.add(FollowEvent)
 def handle_follow(event):
     # ユーザーIDを取得する
@@ -55,6 +55,7 @@ def handle_follow(event):
 def handle_unfollow(event):
     # ユーザーIDを取得する
     user_id = event.source.user_id
+
     # データベースから取得したuser_idと一致するuser_idを削除する
     delete_user_id(user_id)
 
