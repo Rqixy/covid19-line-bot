@@ -12,12 +12,12 @@ def scraping(driver: webdriver, xpaths: dict) -> str:
     # そのため、取得できなかった時はページを更新し再度取得できるか試す。
     # (ただし、無限ループを避けるため、10回までの制限をかけておく)
     for _ in range(10):
-        time.sleep(2)   # 明示的にページの読み込みを待機する
+        time.sleep(4)   # 明示的にページの読み込みを待機する
 
         # iframe内に入る
         iframe_element = driver.find_element(By.XPATH, xpaths['iframe'])
         driver.switch_to.frame(iframe_element)
-        time.sleep(2)   # 明示的にページの読み込みを待機する
+        time.sleep(4)   # 明示的にページの読み込みを待機する
 
         # 情報を取得する
         element = driver.find_element(By.XPATH, xpaths['xpath'])
