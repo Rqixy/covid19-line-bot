@@ -1,4 +1,3 @@
-from tkinter import E
 from selenium import webdriver
 
 from scraping.scraping import scraping
